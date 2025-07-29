@@ -1,15 +1,49 @@
-<script setup lang="ts">
+<script setup>
+import NavBar from './components/NavBar.vue'
 import { RouterLink, RouterView } from 'vue-router'
+import { useAuthStore } from './stores/authStore'
+
+const auth = useAuthStore()
+auth.loadUserFromStorage()
 </script>
 
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-    </nav>
-  </header>
-  <RouterView />
+  <div
+    class="min-h-screen dark:bg-gray-900 text-gray-900 bg-gray-100 dark:text-white flex flex-col"
+  >
+    <NavBar />
+    <div class="flex-grow flex justify-center overflow-hidden">
+      <transition name="page" mode="out-in">
+        <RouterView :key="$route.fullPath" class="w-full" />
+      </transition>
+    </div>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+/* Entering */
+.page-enter-active {
+  transition: all 0.8s ease;
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.page-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Leaving */
+.page-leave-active {
+  transition: all 0.3s ease;
+}
+.page-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+</style>

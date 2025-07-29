@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "category": "Anime",
+    "title": "Naruto",
+    "incorrectStatement": "In *Naruto*, the Sharingan allows its user to control time.",
+    "highlightStart": 44,
+    "highlightEnd": 78,
+    "correction": "Actually, the Sharingan allows the user to copy techniques and predict movement, not control time.",
+    "tags": ["naruto", "anime", "sharingan"],
+    "comment": ""
+  },
+  {
+    "id": 2,
+    "category": "Anime",
+    "title": "Sailor Moon",
+    "incorrectStatement": "Each of the Sailor Soldiers is named after a planet in our solar system.",
+    "highlightStart": 44,
+    "highlightEnd": 78,
+    "correction": "Not all are named after planets. The moon isn’t a planet, and Pluto isn’t one anymore.",
+    "tags": ["anime", "sailor moon"],
+    "comment": "Do you think Sailor Pluto got demoted?"
+  },
+  {
+    "id": 3,
+    "category": "Games",
+    "title": "The Legend of Zelda: Link's Awakening",
+    "incorrectStatement": "Each of the Sailor Soldiers is named after a planet in our solar system. Each of the Sailor Soldiers is named after a planet in our solar system. Each of the Sailor Soldiers is named after a planet in our solar system. Each of the Sailor Soldiers is named after a planet in our solar system.",
+    "highlightStart": 44,
+    "highlightEnd": 78,
+    "correction": "Not all are named after planets. The moon isn’t a planet, and Pluto isn’t one anymore.",
+    "tags": ["anime", "sailor moon"],
+    "comment": "Do you think Sailor Pluto got demoted?"
+  }
+]
