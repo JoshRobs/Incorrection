@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Playlist {
+  id        Int            @id @default(autoincrement())
+  name      String
+  trivia    PlaylistTrivia[]
+  createdAt DateTime       @default(now())
+}
+
+enum Category {
+  GAMES
+  ANIME
+  TV_SHOW
+  MOVIES
+  BOOKS
+}
+
+
+
+model Trivia {
+  id                 Int      @id @default(autoincrement())
+  userId             String
+  user               AppUser  @relation(fields: [userId], references: [id])
+
+  category           Category
+  title              String
+  incorrectStatement String
+  highlightStart     Int
+  highlightEnd       Int
+  correction         String
+  tags               String[]
+  comment            String?
+  createdAt          DateTime @default(now())
+}
+
+model PlaylistTrivia {
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+  playlistId Int
+
+  trivia     Trivia   @relation(fields: [triviaId], references: [id])
+  triviaId   Int
+
+  @@id([playlistId, triviaId]) // Composite primary key
+}

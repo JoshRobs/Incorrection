@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full px-4 py-8 bg-white dark:bg-gray-900">
+  <div class="w-full px-4 py-8">
     <BackButton />
     <h1 class="text-4xl font-bold mb-8 text-center text-amber-400">Solo Play</h1>
 
@@ -14,7 +14,7 @@
       <ModeCard
         to="/play/playlists"
         title="Select Playlist"
-        description="Choose a topic you want to play from your library."
+        description="Choose a topic you want to play from our user-built library."
         icon="📚"
       />
 

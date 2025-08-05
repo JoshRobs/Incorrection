@@ -5,8 +5,8 @@
       'p-6 rounded-xl border transition transform',
       !disabled && 'hover:scale-105 hover:border-amber-400 cursor-pointer',
       disabled
-        ? 'bg-gray-700 border-gray-600 cursor-not-allowed opacity-50'
-        : 'bg-gray-800 border-gray-700',
+        ? 'bg-disabled border-gray-600 cursor-not-allowed opacity-50'
+        : 'bg-secondary border-gray-700',
     ]"
   >
     <div class="text-4xl mb-2">{{ icon }}</div>

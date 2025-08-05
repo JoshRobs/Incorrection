@@ -5,6 +5,10 @@ import FavouritesPage from '@/views/FavouritesPage.vue'
 import PlaylistSelectionPage from '@/views/PlaylistSelectionPage.vue'
 import PlayRandomPage from '@/views/PlayRandomPage.vue'
 import { useAuthStore } from '@/stores/authStore'
+import LoginView from '@/components/Authentication/LoginView.vue'
+import SignupView from '@/components/Authentication/SignupView.vue'
+import LibraryPage from '@/views/LibraryPage.vue'
+import DiscoverPage from '@/views/DiscoverPage.vue'
 
 const routes = [
   {
@@ -32,6 +36,22 @@ const routes = [
     component: FavouritesPage,
     meta: { requiresAuth: true },
   },
+  {
+    path: '/login',
+    component: LoginView,
+  },
+  {
+    path: '/signup',
+    component: SignupView,
+  },
+  {
+    path: '/library',
+    component: LibraryPage,
+  },
+  {
+    path: '/discover',
+    component: DiscoverPage,
+  },
 ]
 
 const router = createRouter({
@@ -41,7 +61,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
-  if (!auth.user) auth.loadUserFromStorage()
+  if (!auth.user) auth.fetchUser()
 
   if (to.meta.requiresAuth && !auth.isLoggedIn) {
     next('/login')

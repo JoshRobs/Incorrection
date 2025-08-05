@@ -1,6 +1,45 @@
-@import './base.css';
 @import 'tailwindcss';
 @custom-variant dark (&:where(.dark, .dark *));
 
 #app {
+}
+
+@theme {
+  --color-background: #ffffff;
+  --color-text: #111111;
+  --color-secondary: #dddddd;
+  --color-tertiary: #374151;
+  --color-disabled: #1f2937;
+}
+.dark {
+  --color-background: #111827;
+  --color-text: #ffffff;
+  --color-secondary: #252f3f;
+  --color-tertiary: #374151;
+  --color-disabled: #1f2937;
+}
+
+body {
+  min-height: 100vh;
+  transition:
+    color 0.5s,
+    background-color 0.5s;
+  line-height: 1.6;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

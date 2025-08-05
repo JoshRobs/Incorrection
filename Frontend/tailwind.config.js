@@ -1,9 +1,18 @@
-/** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{vue,js,ts}'],
+  darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        background: 'var(--color-background)',
+        secondary: 'var(--color-secondary)',
+        text: 'var(--color-text)',
+        disabled: 'var(--color-disabled)',
+      },
+      spacing: {
+        test: '123px', // <--- Add this line
+      },
+    },
   },
-  darkMode: 'class', // 👈 Add this line
   plugins: [],
 }

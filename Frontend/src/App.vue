@@ -4,13 +4,11 @@ import { RouterLink, RouterView } from 'vue-router'
 import { useAuthStore } from './stores/authStore'
 
 const auth = useAuthStore()
-auth.loadUserFromStorage()
+auth.fetchUser()
 </script>
 
 <template>
-  <div
-    class="min-h-screen dark:bg-gray-900 text-gray-900 bg-gray-100 dark:text-white flex flex-col"
-  >
+  <div class="min-h-screen bg-background text-gray-900 dark:text-white flex flex-col">
     <NavBar />
     <div class="flex-grow flex justify-center overflow-hidden">
       <transition name="page" mode="out-in">

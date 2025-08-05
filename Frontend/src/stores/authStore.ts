@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
+import { supabase } from '../utils/supabase.js'
+import type { User } from '@supabase/supabase-js'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    user: null as null | { id: string; name: string; email?: string },
+    user: null as User | null,
   }),
 
   getters: {
@@ -10,19 +12,14 @@ export const useAuthStore = defineStore('auth', {
   },
 
   actions: {
-    login(userData: any) {
-      this.user = userData
-      localStorage.setItem('user', JSON.stringify(userData))
+    async fetchUser() {
+      const { data } = await supabase.auth.getUser()
+      this.user = data.user
     },
 
-    logout() {
+    async logout() {
+      await supabase.auth.signOut()
       this.user = null
-      localStorage.removeItem('user')
-    },
-
-    loadUserFromStorage() {
-      const data = localStorage.getItem('user')
-      if (data) this.user = JSON.parse(data)
     },
   },
 })
