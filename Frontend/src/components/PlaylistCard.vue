@@ -2,8 +2,7 @@ PlaylistCard.vue
 <template>
   <div
     class="trivia-card bg-gray-700 rounded-md p-4 h-32 shadow cursor-move relative"
-    @mouseenter="isHovered = true"
-    @mouseleave="isHovered = false"
+    :data-card-id="element.id"
   >
     <div class="text-xs text-gray-400 mb-1">#{{ index + 1 }}</div>
     <p class="font-medium text-sm truncate" title="Trivia">
@@ -15,7 +14,10 @@ PlaylistCard.vue
 
     <div
       class="absolute top-1 right-1 flex gap-2 transition-opacity duration-200"
-      :class="[drag ? 'hidden' : isHovered ? 'opacity-100' : 'opacity-0']"
+      :class="{
+        'opacity-100 pointer-events-auto': !drag && hoveredId === String(element.id),
+        'opacity-0 pointer-events-none': drag || hoveredId !== String(element.id),
+      }"
     >
       <button @click.stop="openEditModal(element)">
         <i class="fas fa-pencil-alt text-sm text-gray-300 hover:text-white" />
@@ -33,11 +35,10 @@ const props = defineProps({
   element: Object,
   index: Number,
   drag: Boolean,
+  hoveredId: String,
   openEditModal: Function,
   openDeleteModal: Function,
 })
-
-const isHovered = ref(false)
 
 const onCardClick = (item) => {
   alert(`Clicked trivia: ${item.statement}`)

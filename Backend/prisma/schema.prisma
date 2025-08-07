@@ -8,10 +8,12 @@ datasource db {
 }
 
 model Playlist {
-  id        Int            @id @default(autoincrement())
+  id        Int              @id @default(autoincrement())
   name      String
   trivia    PlaylistTrivia[]
-  createdAt DateTime       @default(now())
+  createdAt DateTime         @default(now())
+  AppUser   AppUser?         @relation(fields: [appUserId], references: [id])
+  appUserId String?
 }
 
 enum Category {
@@ -22,12 +24,23 @@ enum Category {
   BOOKS
 }
 
+model AppUser {
+  id          String   @id @default(uuid()) // Your app's user ID
+  supabaseId  String   @unique // Links to auth.users.id
+  displayName String
+  bio         String?
+  level       Int      @default(1)
+  createdAt   DateTime @default(now())
 
+  // Relations
+  trivia    Trivia[]
+  playlists Playlist[]
+}
 
 model Trivia {
-  id                 Int      @id @default(autoincrement())
-  userId             String
-  user               AppUser  @relation(fields: [userId], references: [id])
+  id     Int     @id @default(autoincrement())
+  userId String
+  user   AppUser @relation(fields: [userId], references: [id])
 
   category           Category
   title              String
@@ -37,15 +50,21 @@ model Trivia {
   correction         String
   tags               String[]
   comment            String?
-  createdAt          DateTime @default(now())
+  createdAt          DateTime         @default(now())
+  PlaylistTrivia     PlaylistTrivia[]
 }
 
 model PlaylistTrivia {
   playlist   Playlist @relation(fields: [playlistId], references: [id])
   playlistId Int
 
-  trivia     Trivia   @relation(fields: [triviaId], references: [id])
-  triviaId   Int
+  trivia   Trivia @relation(fields: [triviaId], references: [id])
+  triviaId Int
 
   @@id([playlistId, triviaId]) // Composite primary key
+}
+
+model DiscoverCategory {
+  id     Int     @id @default(autoincrement())
+  name String @unique
 }

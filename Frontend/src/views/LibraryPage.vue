@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
-    <Splitpanes>
-      <Pane size="15" min-size="12" max-size="40" class="p-2 pt-4">
+    <Splitpanes vertical>
+      <Pane size="18" min-size="15" max-size="40" class="p-2 pt-4">
         <!-- Left Panel: Source Navigation -->
         <!-- Header -->
         <div class="flex justify-between items-center mb-4">
@@ -66,6 +66,7 @@
               :element="element"
               :index="index"
               :drag="drag"
+              :hovered-id="hoveredId"
               :openEditModal="openEditModal"
               :openDeleteModal="openDeleteModal"
             />
@@ -117,7 +118,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import { Splitpanes, Pane } from 'splitpanes'
 import PlaylistCard from '@/components/PlaylistCard.vue'
 import draggable from 'vuedraggable'
@@ -229,6 +230,19 @@ function cancelDelete() {
   showDeleteModal.value = false
   selectedTrivia.value = null
 }
+
+const hoveredId = ref(null)
+
+function updateHoveredCard(e) {
+  const el = e.target.closest('[data-card-id]')
+  hoveredId.value = el?.dataset?.cardId || null
+}
+
+window.addEventListener('mousemove', updateHoveredCard)
+
+onUnmounted(() => {
+  window.removeEventListener('mousemove', updateHoveredCard)
+})
 </script>
 
 <style>
@@ -259,6 +273,7 @@ function cancelDelete() {
   color: transparent; /* Hide text */
   background-color: rgb(115, 118, 134);
   pointer-events: none !important;
+  transition: none !important; /* 🚫 Kill all fades */
 }
 
 /* The chosen item (original spot while dragging) */

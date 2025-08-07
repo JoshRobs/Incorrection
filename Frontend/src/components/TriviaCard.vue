@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-xl border shadow-xl relative overflow-hidden max-w-2xl mx-auto bg-gray-100 dark:bg-gray-800 dark:border-gray-700"
+    class="rounded-xl border shadow-xl relative overflow-hidden w-3xl mx-auto bg-gray-100 dark:bg-gray-800 dark:border-gray-700"
   >
     <!-- Top Labels -->
     <div class="flex justify-between items-start p-4">
@@ -36,11 +36,6 @@
       <div
         class="answer-section bg-green-100 border-t-4 border-green-500 p-4 flex items-start gap-2 relative dark:bg-green-900 dark:border-green-400"
       >
-        <!-- <div
-          class="absolute -top-3 left-4 bg-green-600 text-white text-xs px-2 py-1 rounded shadow dark:bg-green-400 dark:text-gray-900"
-        >
-          Correction
-        </div> -->
         <div class="text-sm text-green-900 ml-2 dark:text-green-100">
           <Strong>Correction: </Strong>{{ trivia.correction }}
         </div>
@@ -60,6 +55,12 @@
     <div
       class="flex justify-between items-center px-6 py-4 border-t bg-yellow-100 border-yellow-300 dark:border-gray-700 dark:bg-gray-700"
     >
+      <button
+        @click="next"
+        class="bg-gray-800 hover:bg-gray-700 text-white text-sm px-4 py-2 rounded font-semibold transition dark:bg-gray-600 dark:hover:bg-gray-500"
+      >
+        ← Back
+      </button>
       <button
         @click="showAnswer = !showAnswer"
         class="cursor-pointer bg-yellow-400 hover:bg-yellow-500 text-black text-sm px-4 py-2 rounded font-semibold transition dark:bg-yellow-300 dark:hover:bg-yellow-200"
@@ -86,6 +87,30 @@ const questions = shuffle(triviaData)
 const index = ref(0)
 const trivia = ref(questions[index.value])
 const showAnswer = ref(false)
+
+const toggleHint = () => {
+  // show the hint somehow
+}
+
+const markCorrect = () => {
+  // send to backend or update UI
+}
+
+const toggleFavourite = () => {
+  // toggle like/favourite
+}
+
+const likeTrivia = () => {
+  // increment like
+}
+
+const dislikeTrivia = () => {
+  // increment dislike
+}
+
+const back = () => {
+  // navigate to previous trivia
+}
 
 const next = () => {
   index.value = (index.value + 1) % questions.length

@@ -4,10 +4,17 @@
   >
     <RouterLink
       to="/"
-      class="text-2xl mt-test font-bold h-max text-amber-500 hover:text-amber-400 transition duration-300"
+      class="text-2xl mt-test font-bold h-max text-gold hover:text-gold-highlight transition duration-300"
     >
       Incorrection
     </RouterLink>
+
+    <input
+      v-model="searchQuery"
+      @keyup.enter="goToSearch"
+      placeholder="Search playlists, trivia..."
+      class="bg-secondary px-3 py-2 rounded-md text-sm w-sm"
+    />
 
     <ul class="flex flex-wrap gap-3 text-sm items-center">
       <li>
@@ -27,9 +34,9 @@
       </li>
       <li>
         <RouterLink
-          to="/how-to-play"
+          to="/discover"
           class="px-3 py-2 rounded-md bg-gray-300 dark:bg-gray-800 text-sm font-medium hover:bg-gray-400 dark:hover:bg-gray-600 transition-all duration-200"
-          >How to Play</RouterLink
+          >Discover</RouterLink
         >
       </li>
       <li>
@@ -59,7 +66,7 @@
         <template v-else>
           <RouterLink
             to="/login"
-            class="px-3 py-2 rounded-md bg-amber-600 text-white font-medium hover:bg-amber-500 transition-all duration-200"
+            class="px-3 py-2 rounded-md bg-tertiary hover:bg-slate-600 text-white font-medium hover:text-gold transition-all duration-200"
           >
             Sign In
           </RouterLink>
@@ -70,7 +77,7 @@
           <label class="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" class="sr-only peer" v-model="isDark" @change="toggleDarkMode" />
             <div
-              class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-amber-400 dark:bg-gray-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"
+              class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-gold dark:bg-gray-600 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"
             ></div>
           </label>
           <span class="text-sm">{{ isDark ? 'Dark 🌙' : 'Light 🌞' }}</span>
@@ -114,5 +121,13 @@ const toggleDarkMode = () => {
 const handleLogout = async () => {
   await authStore.logout()
   router.push('/')
+}
+
+const searchQuery = ref('')
+
+function goToSearch() {
+  if (searchQuery.value.trim()) {
+    router.push(`/discover?q=${encodeURIComponent(searchQuery.value.trim())}`)
+  }
 }
 </script>

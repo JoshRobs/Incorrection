@@ -10,13 +10,17 @@
   --color-secondary: #dddddd;
   --color-tertiary: #374151;
   --color-disabled: #1f2937;
+  --color-gold: #fbbf24;
+  --color-gold-highlight: #fcd34d;
 }
 .dark {
-  --color-background: #111827;
+  --color-background: #171a22;
   --color-text: #ffffff;
   --color-secondary: #252f3f;
   --color-tertiary: #374151;
   --color-disabled: #1f2937;
+  --color-gold: #fbbf24;
+  --color-gold-highlight: #fcd34d;
 }
 
 body {

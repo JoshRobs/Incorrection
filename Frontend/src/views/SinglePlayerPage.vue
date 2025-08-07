@@ -14,7 +14,7 @@
       <ModeCard
         to="/play/playlists"
         title="Select Playlist"
-        description="Choose a topic you want to play from our user-built library."
+        description="Choose a curated playlist from our community built library."
         icon="📚"
       />
 
