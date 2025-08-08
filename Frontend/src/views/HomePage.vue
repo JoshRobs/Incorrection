@@ -6,7 +6,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl w-full">
         <ModeCard
           to="/play"
-          title="Solo Play"
+          title="Single Player"
           description="Play at your own pace and test your knowledge against incorrect trivia."
           icon="🧠"
         />

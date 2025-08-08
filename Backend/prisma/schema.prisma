@@ -7,14 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Playlist {
-  id        Int              @id @default(autoincrement())
-  name      String
-  trivia    PlaylistTrivia[]
-  createdAt DateTime         @default(now())
-  AppUser   AppUser?         @relation(fields: [appUserId], references: [id])
-  appUserId String?
-}
 
 enum Category {
   GAMES
@@ -37,21 +29,38 @@ model AppUser {
   playlists Playlist[]
 }
 
-model Trivia {
-  id     Int     @id @default(autoincrement())
-  userId String
-  user   AppUser @relation(fields: [userId], references: [id])
+model Playlist {
+  id                  Int              @id @default(autoincrement())
+  name                String
+  favourites          Int @default(0)
+  trivia              PlaylistTrivia[]
+  imageUrl            String?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  user                AppUser          @relation(fields: [userId], references: [id])
+  userId              String
+}
 
-  category           Category
-  title              String
-  incorrectStatement String
-  highlightStart     Int
-  highlightEnd       Int
-  correction         String
-  tags               String[]
-  comment            String?
-  createdAt          DateTime         @default(now())
-  PlaylistTrivia     PlaylistTrivia[]
+model Trivia {
+  id                  Int     @id @default(autoincrement())
+  userId              String
+  user                AppUser @relation(fields: [userId], references: [id])
+
+  category            Category
+  title               String
+  incorrectStatement  String
+  highlightStart      Int
+  highlightEnd        Int
+  correction          String
+  tags                String[]
+  comment             String?
+  hint                String?
+  likes               Int @default(0)
+  dislikes            Int @default(0)
+  correctCount        Int @default(0)
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  PlaylistTrivia      PlaylistTrivia[]
 }
 
 model PlaylistTrivia {
@@ -67,4 +76,5 @@ model PlaylistTrivia {
 model DiscoverCategory {
   id     Int     @id @default(autoincrement())
   name String @unique
+  imageUrl String? // path or full URL to Supabase storage
 }

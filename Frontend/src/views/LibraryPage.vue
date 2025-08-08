@@ -62,7 +62,8 @@
           @end="handleDragEnd"
         >
           <template #item="{ element, index }">
-            <PlaylistCard
+            <TriviaLibraryCard
+              @click="onCardClick(element)"
               :element="element"
               :index="index"
               :drag="drag"
@@ -120,7 +121,7 @@
 <script setup>
 import { ref, computed, onUnmounted } from 'vue'
 import { Splitpanes, Pane } from 'splitpanes'
-import PlaylistCard from '@/components/PlaylistCard.vue'
+import TriviaLibraryCard from '@/components/TriviaLibraryCard.vue'
 import draggable from 'vuedraggable'
 import 'splitpanes/dist/splitpanes.css'
 

@@ -1,7 +1,7 @@
 <template>
   <div class="w-full px-4 py-8">
     <BackButton />
-    <h1 class="text-4xl font-bold mb-8 text-center text-amber-400">Solo Play</h1>
+    <h1 class="text-4xl font-bold mb-8 text-center text-amber-400">Single Player</h1>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
       <ModeCard
