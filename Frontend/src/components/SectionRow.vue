@@ -22,7 +22,7 @@
         <!-- Show All Card -->
         <RouterLink
           :to="moreLink"
-          class="flex items-center justify-center min-w-[150px] aspect-square bg-gray-800 text-white text-sm rounded-xl hover:scale-105 hover:border border-yellow-400 transition-all duration-200 shrink-0"
+          class="flex items-center justify-center min-w-[150px] aspect-square bg-gray-800 text-white text-sm rounded-xl hover:scale-105 border border-gray-700 hover:border-yellow-400 transition-all duration-200 shrink-0"
         >
           Show All →
         </RouterLink>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="trivia-card bg-gray-700 rounded-md p-4 h-32 shadow cursor-move relative"
+    class="trivia-card bg-gray-700 rounded-md p-4 h-48 shadow cursor-move relative"
     :data-card-id="element.id"
     @click="onCardClick(element)"
   >

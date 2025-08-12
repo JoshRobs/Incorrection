@@ -51,7 +51,7 @@
         <div class="h-4 w-px bg-gray-400/50" />
 
         <!-- Browse Button -->
-        <RouterLink to="/discover" class="relative group text-blue-300 hover:text-white transition">
+        <RouterLink to="/browse" class="relative group text-blue-300 hover:text-white transition">
           <i class="fas fa-compass text-lg align-middle relative top-[1px]" />
 
           <!-- Tooltip -->

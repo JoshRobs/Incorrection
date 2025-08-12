@@ -3,6 +3,7 @@
     <Splitpanes vertical>
       <Pane size="18" min-size="15" max-size="40" class="p-2 pt-4">
         <!-- Left Panel: Source Navigation -->
+
         <!-- Header -->
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-lg font-bold">Your Library</h2>
@@ -19,8 +20,36 @@
           type="text"
           v-model="search"
           placeholder="Search playlists..."
-          class="w-full px-3 py-2 mb-4 text-sm rounded bg-gray-800 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full px-3 py-2 mb-3 text-sm rounded bg-gray-800 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+
+        <!-- Sort Dropdown -->
+        <div class="mb-4">
+          <select
+            v-model="sortOption"
+            class="w-full px-3 py-2 text-sm rounded bg-gray-800 text-gray-200 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="all">All Playlists</option>
+            <option value="created">Created by Me</option>
+            <option value="added">Added to Library</option>
+          </select>
+        </div>
+
+        <!-- All Trivia (Pinned Playlist) -->
+        <div
+          class="flex items-center rounded space-x-3 cursor-pointer hover:bg-gray-800 p-2 "
+          @click="selectPlaylist(allTriviaPlaylist)"
+        >
+          <img
+            :src="allTriviaPlaylist.image"
+            alt="cover"
+            class="w-12 h-12 rounded object-cover"
+          />
+          <div class="flex flex-col">
+            <span class="text-sm font-medium truncate">{{ allTriviaPlaylist.name }}</span>
+            <span class="text-xs text-gray-400 truncate">{{ allTriviaPlaylist.creator }}</span>
+          </div>
+        </div>
 
         <!-- Playlist List -->
         <div class="flex-1 overflow-y-auto">
@@ -28,6 +57,7 @@
             v-for="playlist in filteredPlaylists"
             :key="playlist.id"
             class="flex items-center rounded space-x-3 cursor-pointer hover:bg-gray-800 p-2"
+            @click="selectPlaylist(playlist)"
           >
             <img :src="playlist.image" alt="cover" class="w-12 h-12 rounded object-cover" />
             <div class="flex flex-col">
@@ -39,41 +69,48 @@
       </Pane>
 
       <Pane class="p-4 bg-gray-800 text-white relative">
-        <!-- Locked Title -->
-        <div class="sticky top-0 z-10 bg-gray-800 pb-2">
-          <h2 class="text-lg font-bold border-b border-gray-700 pb-2 mb-4">Playlist Preview</h2>
-        </div>
+  <PlaylistLibraryHeader/>
 
-        <!-- Draggable Grid -->
-        <draggable
-          v-model="playlistItems"
-          tag="transition-group"
-          :component-data="{
-            tag: 'div',
-            type: 'transition-group',
-            name: !drag ? 'flip-list' : null,
-          }"
-          class="grid grid-cols-4 gap-4 relative"
-          :animation="200"
-          :ghost-class="'drag-ghost'"
-          :chosen-class="'drag-chosen'"
-          :drag-class="'drag-dragging'"
-          @start="drag = true"
-          @end="handleDragEnd"
-        >
-          <template #item="{ element, index }">
-            <TriviaLibraryCard
-              @click="onCardClick(element)"
-              :element="element"
-              :index="index"
-              :drag="drag"
-              :hovered-id="hoveredId"
-              :openEditModal="openEditModal"
-              :openDeleteModal="openDeleteModal"
-            />
-          </template>
-        </draggable>
-      </Pane>
+  <!-- Draggable Grid -->
+  <div class="grid grid-cols-4 gap-4 relative">
+    <draggable
+      v-model="playlistItems"
+      tag="transition-group"
+      :component-data="{
+        tag: 'div',
+        type: 'transition-group',
+        name: !drag ? 'flip-list' : null,
+      }"
+      class="contents"
+      :animation="200"
+      :ghost-class="'drag-ghost'"
+      :chosen-class="'drag-chosen'"
+      :drag-class="'drag-dragging'"
+      @start="drag = true"
+      @end="handleDragEnd"
+    >
+      <template #item="{ element, index }">
+        <TriviaLibraryCard
+          @click="onCardClick(element)"
+          :element="element"
+          :index="index"
+          :drag="drag"
+          :hovered-id="hoveredId"
+          :openEditModal="openEditModal"
+          :openDeleteModal="openDeleteModal"
+        />
+      </template>
+    </draggable>
+
+    <!-- Add Trivia Card -->
+    <div
+      @click="openAddTriviaModal"
+      class="flex items-center justify-center bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors border-2 border-dashed border-gray-500"
+    >
+      <span class="text-lg font-semibold">Add Trivia +</span>
+    </div>
+  </div>
+</Pane>
     </Splitpanes>
     <!-- Edit Modal -->
     <div
@@ -124,6 +161,7 @@ import { Splitpanes, Pane } from 'splitpanes'
 import TriviaLibraryCard from '@/components/TriviaLibraryCard.vue'
 import draggable from 'vuedraggable'
 import 'splitpanes/dist/splitpanes.css'
+import PlaylistLibraryHeader from '@/components/Playlists/PlaylistLibraryHeader.vue'
 
 let lastMouseX = 0
 let lastMouseY = 0
@@ -150,39 +188,35 @@ function handleDragEnd() {
   void document.body.offsetHeight // Classic hack to force reflow
 }
 
-// Side bar
-const search = ref('')
 const onCreate = () => {
   alert('Open create playlist modal or route')
 }
+// Side bar
+const search = ref('')
 
-// Mock data — replace with real playlists from backend
+// Mock "real" playlists from backend
 const playlists = ref([
-  {
-    id: 1,
-    name: 'Gaming Trivia Vol. 1',
-    creator: 'Josh Roberts',
-    image: 'https://via.placeholder.com/100x100?text=🎮',
-  },
-  {
-    id: 2,
-    name: 'Sci-Fi & Fantasy',
-    creator: 'Emily Ray',
-    image: 'https://via.placeholder.com/100x100?text=📚',
-  },
-  {
-    id: 3,
-    name: 'Anime Picks',
-    creator: 'Kenta Yamada',
-    image: 'https://via.placeholder.com/100x100?text=🍥',
-  },
+  { id: 1, name: 'Gaming Trivia Vol. 1', creator: 'Josh Roberts', image: 'https://via.placeholder.com/100x100?text=🎮' },
+  { id: 2, name: 'Sci-Fi & Fantasy', creator: 'Emily Ray', image: 'https://via.placeholder.com/100x100?text=📚' },
+  { id: 3, name: 'Anime Picks', creator: 'Kenta Yamada', image: 'https://via.placeholder.com/100x100?text=🍥' },
 ])
 
 const filteredPlaylists = computed(() => {
   const query = search.value.toLowerCase()
-  return playlists.value.filter(
-    (p) => p.name.toLowerCase().includes(query) || p.creator.toLowerCase().includes(query),
+
+  let list = playlists.value.filter(
+    (p) =>
+      p.name.toLowerCase().includes(query) ||
+      p.creator.toLowerCase().includes(query),
   )
+
+  if (sortOption.value === 'created') {
+    list = list.filter((p) => p.creator === 'Josh Roberts') // Replace with logged-in user
+  } else if (sortOption.value === 'added') {
+    list = list.filter((p) => p.creator !== 'Josh Roberts')
+  }
+
+  return list
 })
 
 // Sample playlist items
@@ -203,6 +237,30 @@ const playlistItems = ref([
     work: 'History Trivia',
   },
 ])
+
+
+const sortOption = ref('all')
+
+// Pinned "All Trivia" playlist
+const allTriviaPlaylist = {
+  id: 'all-trivia',
+  name: 'All Trivia',
+  creator: 'You',
+  image: 'https://via.placeholder.com/100x100?text=⭐',
+}
+
+async function selectPlaylist(playlist) {
+  selectedPlaylist.value = playlist
+  if (playlist.virtual) {
+    // Virtual "All Trivia" — fetch favorited trivia
+    const { data } = await axios.get('/api/trivia/favorites')
+    playlistItems.value = data
+  } else {
+    // Normal playlist — fetch its trivia
+    const { data } = await axios.get(`/api/playlists/${playlist.id}/trivia`)
+    playlistItems.value = data
+  }
+}
 
 // Modal state
 const showEditModal = ref(false)

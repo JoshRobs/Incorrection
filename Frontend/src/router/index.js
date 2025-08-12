@@ -9,6 +9,7 @@ import LoginView from '@/components/Authentication/LoginView.vue'
 import SignupView from '@/components/Authentication/SignupView.vue'
 import LibraryPage from '@/views/LibraryPage.vue'
 import DiscoverPage from '@/views/DiscoverPage.vue'
+import BrowseCategoriesPage from '@/views/BrowseCategoriesPage.vue'
 
 const routes = [
   {
@@ -51,6 +52,10 @@ const routes = [
   {
     path: '/discover',
     component: DiscoverPage,
+  },
+  {
+    path: '/browse',
+    component: BrowseCategoriesPage,
   },
 ]
 

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-60 relative rounded-xl p-4 cursor-pointer group overflow-hidden transition-all duration-200 transform hover:scale-105 hover:border-2 border-yellow-400"
+    class="w-60 relative rounded-xl p-4 cursor-pointer group overflow-hidden transition-all duration-200 transform hover:scale-105 border-2 border-gray-700 hover:border-yellow-400"
     :style="{
       background: backgroundGradient,
       aspectRatio: '1 / 0.9',

@@ -14,6 +14,13 @@ enum Category {
   TV_SHOW
   MOVIES
   BOOKS
+  COMICS
+}
+
+enum HintType {
+  TEXT
+  IMAGE
+  AUDIO
 }
 
 model AppUser {
@@ -32,6 +39,7 @@ model AppUser {
 model Playlist {
   id                  Int              @id @default(autoincrement())
   name                String
+  description         String
   favourites          Int @default(0)
   trivia              PlaylistTrivia[]
   imageUrl            String?
@@ -54,7 +62,7 @@ model Trivia {
   correction          String
   tags                String[]
   comment             String?
-  hint                String?
+  hint                Hint?
   likes               Int @default(0)
   dislikes            Int @default(0)
   correctCount        Int @default(0)
@@ -77,4 +85,20 @@ model DiscoverCategory {
   id     Int     @id @default(autoincrement())
   name String @unique
   imageUrl String? // path or full URL to Supabase storage
+}
+
+model Hint {
+  id        Int      @id @default(autoincrement())
+  triviaId  Int      @unique
+  trivia    Trivia   @relation(fields: [triviaId], references: [id])
+
+  type      HintType
+
+  // Core content field
+  content   String?  // TEXT → actual text, IMAGE/AUDIO → URL
+
+  // Only used for IMAGE/AUDIO hints
+  title     String?
+
+  createdAt DateTime @default(now())
 }
