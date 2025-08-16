@@ -9,7 +9,7 @@
           <h2 class="text-lg font-bold">Your Library</h2>
           <button
             class="cursor-pointer px-3 py-1 rounded-full bg-gray-300 dark:bg-gray-800 text-sm font-medium hover:bg-gray-400 dark:hover:bg-gray-600 transition-all duration-200"
-            @click="onCreate"
+            @click="onCreatePlaylist"
           >
             + Create
           </button>
@@ -37,14 +37,10 @@
 
         <!-- All Trivia (Pinned Playlist) -->
         <div
-          class="flex items-center rounded space-x-3 cursor-pointer hover:bg-gray-800 p-2 "
+          class="flex items-center rounded space-x-3 cursor-pointer hover:bg-gray-800 p-2"
           @click="selectPlaylist(allTriviaPlaylist)"
         >
-          <img
-            :src="allTriviaPlaylist.image"
-            alt="cover"
-            class="w-12 h-12 rounded object-cover"
-          />
+          <img :src="allTriviaPlaylist.image" alt="cover" class="w-12 h-12 rounded object-cover" />
           <div class="flex flex-col">
             <span class="text-sm font-medium truncate">{{ allTriviaPlaylist.name }}</span>
             <span class="text-xs text-gray-400 truncate">{{ allTriviaPlaylist.creator }}</span>
@@ -69,48 +65,48 @@
       </Pane>
 
       <Pane class="p-4 bg-gray-800 text-white relative">
-  <PlaylistLibraryHeader/>
+        <PlaylistLibraryHeader />
 
-  <!-- Draggable Grid -->
-  <div class="grid grid-cols-4 gap-4 relative">
-    <draggable
-      v-model="playlistItems"
-      tag="transition-group"
-      :component-data="{
-        tag: 'div',
-        type: 'transition-group',
-        name: !drag ? 'flip-list' : null,
-      }"
-      class="contents"
-      :animation="200"
-      :ghost-class="'drag-ghost'"
-      :chosen-class="'drag-chosen'"
-      :drag-class="'drag-dragging'"
-      @start="drag = true"
-      @end="handleDragEnd"
-    >
-      <template #item="{ element, index }">
-        <TriviaLibraryCard
-          @click="onCardClick(element)"
-          :element="element"
-          :index="index"
-          :drag="drag"
-          :hovered-id="hoveredId"
-          :openEditModal="openEditModal"
-          :openDeleteModal="openDeleteModal"
-        />
-      </template>
-    </draggable>
+        <!-- Draggable Grid -->
+        <div class="grid grid-cols-4 gap-4 relative">
+          <draggable
+            v-model="playlistItems"
+            tag="transition-group"
+            :component-data="{
+              tag: 'div',
+              type: 'transition-group',
+              name: !drag ? 'flip-list' : null,
+            }"
+            class="contents"
+            :animation="200"
+            :ghost-class="'drag-ghost'"
+            :chosen-class="'drag-chosen'"
+            :drag-class="'drag-dragging'"
+            @start="drag = true"
+            @end="handleDragEnd"
+          >
+            <template #item="{ element, index }">
+              <LibraryTriviaCard
+                @click="onCardClick(element)"
+                :element="element"
+                :index="index"
+                :drag="drag"
+                :hovered-id="hoveredId"
+                :openEditModal="openEditModal"
+                :openDeleteModal="openDeleteModal"
+              />
+            </template>
+          </draggable>
 
-    <!-- Add Trivia Card -->
-    <div
-      @click="openAddTriviaModal"
-      class="flex items-center justify-center bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors border-2 border-dashed border-gray-500"
-    >
-      <span class="text-lg font-semibold">Add Trivia +</span>
-    </div>
-  </div>
-</Pane>
+          <!-- Add Trivia Card -->
+          <div
+            @click="openAddTriviaModal"
+            class="flex items-center justify-center bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors border-2 border-dashed border-gray-500"
+          >
+            <span class="text-lg font-semibold">Add Trivia +</span>
+          </div>
+        </div>
+      </Pane>
     </Splitpanes>
     <!-- Edit Modal -->
     <div
@@ -152,20 +148,168 @@
         </div>
       </div>
     </div>
+    <!-- Modal -->
+    <!-- Modal with Transition -->
+    <transition
+      enter-active-class="transition duration-200 ease-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition duration-200 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <div
+        v-if="openPlaylistModal"
+        class="fixed inset-0 flex items-center justify-center z-50 bg-black/70 transition-opacity"
+      >
+        <div class="bg-gray-800 text-white rounded-lg shadow-lg w-full max-w-xl p-6">
+          <h2 class="text-xl font-bold mb-4">Create Playlist</h2>
+
+          <!-- Grid Layout: 2 columns, 2 rows -->
+          <div class="grid grid-cols-2 grid-rows-[auto_auto] gap-4">
+            <!-- Left column, first row: Image Preview -->
+            <div
+              class="relative w-full h-48 bg-gray-700 rounded-lg cursor-pointer overflow-hidden"
+              @click="triggerFileInput"
+            >
+              <input
+                ref="fileInput"
+                type="file"
+                accept="image/*"
+                class="hidden"
+                @change="onPlaylistImageUpload"
+              />
+              <img
+                v-if="playlistCreateForm.imagePreview"
+                :src="playlistCreateForm.imagePreview"
+                alt="Preview"
+                class="w-full h-full object-cover"
+              />
+              <div
+                v-if="!playlistCreateForm.imagePreview"
+                class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 text-gray-300 text-sm font-semibold"
+              >
+                Choose Image
+              </div>
+            </div>
+
+            <!-- Right column, first row: Title + Description -->
+            <div class="flex flex-col w-full h-48">
+              <!-- Title -->
+              <div>
+                <label class="block mb-1">Title</label>
+                <input
+                  v-model="playlistCreateForm.title"
+                  type="text"
+                  class="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 outline-none"
+                />
+              </div>
+
+              <!-- Description -->
+              <div class="mb-4">
+                <label class="block my-1">Description</label>
+                <textarea
+                  v-model="playlistCreateForm.description"
+                  rows="3"
+                  class="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 outline-none"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Second row, full width -->
+          <div class="col-span-2 flex flex-col gap-4">
+            <!-- Private Checkbox -->
+            <div class="mb-4 flex items-center">
+              <input
+                v-model="playlistCreateForm.private"
+                type="checkbox"
+                id="private"
+                class="mr-2"
+              />
+              <label for="private">Private Playlist</label>
+            </div>
+
+            <!-- Mediums Multiselect -->
+            <div class="mb-4">
+              <label class="block mb-2">Mediums</label>
+              <div class="flex flex-wrap gap-2">
+                <label
+                  v-for="medium in mediums"
+                  :key="medium"
+                  class="flex items-center space-x-2 bg-gray-700 px-3 py-1 rounded cursor-pointer select-none"
+                >
+                  <input type="checkbox" :value="medium" v-model="playlistCreateForm.mediums" />
+                  <span>{{ medium }}</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex justify-end space-x-3">
+              <button
+                @click="openPlaylistModal = false"
+                class="px-4 py-2 bg-gray-600 rounded hover:bg-gray-500"
+              >
+                Cancel
+              </button>
+              <button @click="submitForm" class="px-4 py-2 bg-blue-600 rounded hover:bg-blue-500">
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onUnmounted } from 'vue'
 import { Splitpanes, Pane } from 'splitpanes'
-import TriviaLibraryCard from '@/components/TriviaLibraryCard.vue'
+import LibraryTriviaCard from '@/components/LibraryTriviaCard.vue'
 import draggable from 'vuedraggable'
 import 'splitpanes/dist/splitpanes.css'
 import PlaylistLibraryHeader from '@/components/Playlists/PlaylistLibraryHeader.vue'
+import defaultPlaylistImage from '@/assets/images/DefaultPlaylistImage.png'
 
 let lastMouseX = 0
 let lastMouseY = 0
 
+// Playlist creationg modal
+const openPlaylistModal = ref(false)
+const fileInput = ref(null)
+
+const onCreatePlaylist = () => {
+  openPlaylistModal.value = true
+}
+const playlistCreateForm = ref({
+  imageFile: null,
+  imagePreview: null,
+  title: '',
+  description: '',
+  private: false,
+  mediums: [],
+})
+function onPlaylistImageUpload(event) {
+  const file = event.target.files[0]
+  if (file) {
+    playlistCreateForm.value.imageFile = file
+    playlistCreateForm.value.imagePreview = URL.createObjectURL(file)
+  }
+}
+// Trigger hidden file input on preview click
+function triggerFileInput() {
+  fileInput.value.click()
+}
+
+function submitForm() {
+  console.log('Playlist Data:', playlistCreateForm.value)
+  // TODO: Send to backend via API
+  openPlaylistModal.value = false
+}
+
+//Handle hover on draggable cards
 window.addEventListener('mousemove', (e) => {
   lastMouseX = e.clientX
   lastMouseY = e.clientY
@@ -188,26 +332,36 @@ function handleDragEnd() {
   void document.body.offsetHeight // Classic hack to force reflow
 }
 
-const onCreate = () => {
-  alert('Open create playlist modal or route')
-}
 // Side bar
 const search = ref('')
 
 // Mock "real" playlists from backend
 const playlists = ref([
-  { id: 1, name: 'Gaming Trivia Vol. 1', creator: 'Josh Roberts', image: 'https://via.placeholder.com/100x100?text=🎮' },
-  { id: 2, name: 'Sci-Fi & Fantasy', creator: 'Emily Ray', image: 'https://via.placeholder.com/100x100?text=📚' },
-  { id: 3, name: 'Anime Picks', creator: 'Kenta Yamada', image: 'https://via.placeholder.com/100x100?text=🍥' },
+  {
+    id: 1,
+    name: 'Gaming Trivia Vol. 1',
+    creator: 'Josh Roberts',
+    image: defaultPlaylistImage,
+  },
+  {
+    id: 2,
+    name: 'Sci-Fi & Fantasy',
+    creator: 'Emily Ray',
+    image: defaultPlaylistImage,
+  },
+  {
+    id: 3,
+    name: 'Anime Picks',
+    creator: 'Kenta Yamada',
+    image: defaultPlaylistImage,
+  },
 ])
 
 const filteredPlaylists = computed(() => {
   const query = search.value.toLowerCase()
 
   let list = playlists.value.filter(
-    (p) =>
-      p.name.toLowerCase().includes(query) ||
-      p.creator.toLowerCase().includes(query),
+    (p) => p.name.toLowerCase().includes(query) || p.creator.toLowerCase().includes(query),
   )
 
   if (sortOption.value === 'created') {
@@ -238,7 +392,6 @@ const playlistItems = ref([
   },
 ])
 
-
 const sortOption = ref('all')
 
 // Pinned "All Trivia" playlist
@@ -246,7 +399,7 @@ const allTriviaPlaylist = {
   id: 'all-trivia',
   name: 'All Trivia',
   creator: 'You',
-  image: 'https://via.placeholder.com/100x100?text=⭐',
+  image: defaultPlaylistImage,
 }
 
 async function selectPlaylist(playlist) {

@@ -41,7 +41,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import PlaylistCard from './PlaylistCard.vue'
+import PlaylistCard from './DiscoverPlaylistCard.vue'
 
 const props = defineProps({
   title: String,

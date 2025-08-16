@@ -10,6 +10,9 @@ import SignupView from '@/components/Authentication/SignupView.vue'
 import LibraryPage from '@/views/LibraryPage.vue'
 import DiscoverPage from '@/views/DiscoverPage.vue'
 import BrowseCategoriesPage from '@/views/BrowseCategoriesPage.vue'
+import MyTriviaPage from '@/views/MyTriviaPage.vue'
+import CreateTriviaPage from '@/views/CreateTriviaPage.vue'
+import TestPage from '@/views/TestPage.vue'
 
 const routes = [
   {
@@ -56,6 +59,21 @@ const routes = [
   {
     path: '/browse',
     component: BrowseCategoriesPage,
+  },
+  {
+    path: '/library/my-trivia',
+    name: 'MyTrivia',
+    component: MyTriviaPage,
+  },
+  {
+    path: '/library/create',
+    name: 'CreateTrivia',
+    component: CreateTriviaPage,
+  },
+  {
+    path: '/test',
+    name: 'Test',
+    component: TestPage,
   },
 ]
 

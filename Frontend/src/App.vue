@@ -1,6 +1,6 @@
 <script setup>
 import NavBar from './components/NavBar.vue'
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import { useAuthStore } from './stores/authStore'
 
 const auth = useAuthStore()
@@ -8,7 +8,7 @@ auth.fetchUser()
 </script>
 
 <template>
-  <div class="min-h-screen bg-background text-gray-900 dark:text-white flex flex-col">
+  <div class="h-screen min-h-screen bg-background text-gray-900 dark:text-white flex flex-col">
     <NavBar />
     <div class="flex-grow flex justify-center overflow-hidden">
       <transition name="page" mode="out-in">

@@ -1,23 +1,20 @@
 <template>
-  <div class="px-6 py-8 space-y-10">
+  <div class="scroll-container flex-1 px-6 py-8 space-y-10 overflow-auto">
     <SectionRow
       title="Recently Played"
       :items="recentlyPlayed"
       moreLink="/search?type=playlists&filter=recent"
     />
-
     <SectionRow
       title="Your Favourites"
       :items="favourites"
       moreLink="/search?type=playlists&filter=favourites"
     />
-
     <SectionRow
       title="Trending"
       :items="trending"
       moreLink="/search?type=playlists&filter=trending"
     />
-
     <div v-for="category in categories" :key="category.slug">
       <SectionRow
         :title="category.name"
@@ -89,4 +86,29 @@ async function fetchPlaylistCategories() {
 }
 </script>
 
-<style scoped></style>
+<style>
+.scroll-container {
+  /* WebKit overlay scrollbar */
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(75, 75, 75, 0.5) transparent;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: rgba(75, 75, 75, 0.5);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.scroll-container:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+</style>
