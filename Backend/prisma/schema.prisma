@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../../packages/types/generated/client" // <— shared location
 }
 
 datasource db {
@@ -23,13 +24,20 @@ enum HintType {
   AUDIO
 }
 
+enum PlaylistStatus {
+  PUBLIC
+  PRIVATE
+}
+
 model AppUser {
-  id          String   @id @default(uuid()) // Your app's user ID
-  supabaseId  String   @unique // Links to auth.users.id
-  displayName String
-  bio         String?
-  level       Int      @default(1)
-  createdAt   DateTime @default(now())
+  id              String   @id @default(uuid()) // Your app's user ID
+  supabaseAuthId  String   @unique // Links to auth.users.id
+  email           String   @default("")
+  displayName     String
+  bio             String?
+  profilePicture  String?  // IMAGE URL
+  level           Int      @default(1)
+  createdAt       DateTime @default(now())
 
   // Relations
   trivia    Trivia[]
@@ -40,10 +48,11 @@ model Playlist {
   id                  Int              @id @default(autoincrement())
   name                String
   description         String
-  media               Category[]
-  favourites          Int @default(0)
+  mediaTags           Category[]
+  favourites          Int              @default(0)
   trivia              PlaylistTrivia[]
   imageUrl            String?
+  status              PlaylistStatus
   createdAt           DateTime         @default(now())
   updatedAt           DateTime         @updatedAt
   user                AppUser          @relation(fields: [userId], references: [id])

@@ -1,7 +1,5 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "../utils/prismaClient.js";
 const router = express.Router();
 
 // POST /api/trivia - Create a new trivia question

@@ -76,12 +76,4 @@ const handleLogin = async () => {
   if (error) alert(error.message)
   else alert('Signed in!')
 }
-const signInWithGoogle = async () => {
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-  })
-  if (error) {
-    alert('Google sign-in failed: ' + error.message)
-  }
-}
 </script>

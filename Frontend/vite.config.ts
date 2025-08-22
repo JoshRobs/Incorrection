@@ -12,6 +12,23 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@project/types': fileURLToPath(new URL('../packages/types', import.meta.url)), // alias to shared types
+    },
+  },
+  optimizeDeps: {
+    include: ['@project/types'],
+  },
+  server: {
+    fs: {
+      allow: ['..'], // allow serving files from parent folder
+    },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        // optionally remove /api if backend doesn’t expect it
+        // rewrite: (path) => path.replace(/^\/api/, ''),
+      },
     },
   },
 })

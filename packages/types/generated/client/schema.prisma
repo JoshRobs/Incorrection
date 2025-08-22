@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../packages/types/generated/client" // <— shared location
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Category {
+  GAMES
+  ANIME
+  TV_SHOW
+  MOVIES
+  BOOKS
+  COMICS
+}
+
+enum HintType {
+  TEXT
+  IMAGE
+  AUDIO
+}
+
+enum PlaylistStatus {
+  PUBLIC
+  PRIVATE
+}
+
+model AppUser {
+  id             String   @id @default(uuid()) // Your app's user ID
+  supabaseAuthId String   @unique // Links to auth.users.id
+  email          String   @default("")
+  displayName    String
+  bio            String?
+  profilePicture String? // IMAGE URL
+  level          Int      @default(1)
+  createdAt      DateTime @default(now())
+
+  // Relations
+  trivia    Trivia[]
+  playlists Playlist[]
+}
+
+model Playlist {
+  id          Int              @id @default(autoincrement())
+  name        String
+  description String
+  mediaTags   Category[]
+  favourites  Int              @default(0)
+  trivia      PlaylistTrivia[]
+  imageUrl    String?
+  status      PlaylistStatus
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  user        AppUser          @relation(fields: [userId], references: [id])
+  userId      String
+}
+
+model Trivia {
+  id     Int     @id @default(autoincrement())
+  userId String
+  user   AppUser @relation(fields: [userId], references: [id])
+
+  category           Category
+  title              String
+  incorrectStatement String
+  highlightStart     Int
+  highlightEnd       Int
+  correction         String
+  tags               String[]
+  comment            String?
+  hint               Hint?
+  likes              Int              @default(0)
+  dislikes           Int              @default(0)
+  correctCount       Int              @default(0)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  PlaylistTrivia     PlaylistTrivia[]
+}
+
+model PlaylistTrivia {
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+  playlistId Int
+
+  trivia   Trivia @relation(fields: [triviaId], references: [id])
+  triviaId Int
+
+  @@id([playlistId, triviaId]) // Composite primary key
+}
+
+model DiscoverCategory {
+  id       Int     @id @default(autoincrement())
+  name     String  @unique
+  imageUrl String? // path or full URL to Supabase storage
+}
+
+model Hint {
+  id       Int    @id @default(autoincrement())
+  triviaId Int    @unique
+  trivia   Trivia @relation(fields: [triviaId], references: [id])
+
+  type HintType
+
+  // Core content field
+  content String? // TEXT → actual text, IMAGE/AUDIO → URL
+
+  // Only used for IMAGE/AUDIO hints
+  title String?
+
+  createdAt DateTime @default(now())
+}

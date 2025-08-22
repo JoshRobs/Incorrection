@@ -22,6 +22,19 @@
             placeholder="you@example.com"
           />
         </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" for="email"
+            >Display Name</label
+          >
+          <input
+            id="displayName"
+            v-model="displayName"
+            type="text"
+            required
+            class="w-full px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-neutral-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            placeholder="MrNerdington"
+          />
+        </div>
 
         <div>
           <label
@@ -36,6 +49,21 @@
             required
             class="w-full px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-neutral-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             placeholder="Choose a strong password"
+          />
+        </div>
+        <div>
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            for="confirmPassword"
+            >Confirm Password</label
+          >
+          <input
+            id="confirmPassword"
+            v-model="confirmPassword"
+            type="password"
+            required
+            class="w-full px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-neutral-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            placeholder="Confirm your password"
           />
         </div>
 
@@ -60,20 +88,26 @@
 
 <script setup>
 import { ref } from 'vue'
-import { supabase } from '@/utils/supabase'
 import AuthLayout from './AuthLayout.vue'
+import { useAuthStore } from '@/stores/authStore'
+
+const authStore = useAuthStore()
 
 const email = ref('')
 const password = ref('')
+const confirmPassword = ref('')
+const displayName = ref('')
 
 const handleSignup = async () => {
-  console.log('Signing up with', email.value, password.value)
-  const { error } = await supabase.auth.signUp({
-    email: email.value,
-    password: password.value,
-  })
-
-  if (error) alert(error.message)
-  else alert('Account created! Please check your email to confirm.')
+  await authStore
+    .CreateUser(email.value, password.value, displayName.value, confirmPassword.value)
+    .then(() => {
+      alert('Account created successfully!')
+      // Redirect to login or home page
+      router.push('/')
+    })
+    .catch((error) => {
+      alert('Signup failed: ' + error.message)
+    })
 }
 </script>

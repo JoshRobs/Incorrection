@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import triviaRoutes from "./routes/trivia.js";
 import playlistRoutes from "./routes/playlists.js";
+import authRoutes from "./routes/auth.js";
 
 dotenv.config();
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 
 app.use("/api/playlists", playlistRoutes);
 app.use("/api/trivia", triviaRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("🧠 Trivia backend is running!");

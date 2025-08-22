@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="grid grid-cols-3 bg-background text-white shadow shadow-white/10 px-6 py-4 flex justify-between items-center transition duration-300"
+    class="grid grid-cols-3 bg-background text-white shadow shadow-white/10 px-6 py-4 justify-between items-center transition duration-300"
   >
     <div class="flex items-center">
       <RouterLink
@@ -88,14 +88,16 @@
           >
         </li>
         <li>
-          <template v-if="authStore.user">
+          <template v-if="authStore.supabaseAuthUser && authStore.appUser">
             <div class="flex items-center space-x-3">
               <img
-                :src="authStore.user.user_metadata.avatar_url || 'https://i.pravatar.cc/40'"
+                :src="
+                  authStore.supabaseAuthUser.user_metadata.avatar_url || 'https://i.pravatar.cc/40'
+                "
                 alt="Profile"
                 class="w-8 h-8 rounded-full border"
               />
-              <span class="text-sm">{{ authStore.user.email }}</span>
+              <span class="text-sm">{{ authStore.appUser.displayName }}</span>
               <button
                 @click="handleLogout"
                 class="px-3 py-2 rounded-md bg-gray-200 dark:bg-gray-800 text-sm font-medium hover:bg-red-400 hover:text-white dark:hover:bg-gray-600 transition-all duration-200"
@@ -145,9 +147,6 @@ const router = useRouter()
 
 // On mount: read from localStorage or fallback to system preference
 onMounted(async () => {
-  // Fetch user on page load
-  await authStore.fetchUser()
-
   const stored = localStorage.getItem('darkMode')
   if (stored === 'true') {
     isDark.value = true

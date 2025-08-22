@@ -1,17 +1,29 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    }
+  "include": [
+    "src",
+    "../packages/types" // include the shared types
   ],
+
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "npm run build && npx netlify deploy --prod"
+  },
+  "compilerOptions": {
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@project/types": ["../packages/types"] // alias to shared types
+    },
+    "types": ["vite/client"],
+    "noEmit": true
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <button
-    class="cursor-pointer w-full mt-4 bg-white text-black border border-gray-100 rounded-xl py-2 px-4 flex items-center justify-center hover:bg-gray-100"
+    class="cursor-pointer w-full mt-1 bg-white text-black border border-gray-100 rounded-xl py-2 px-4 flex items-center justify-center hover:bg-gray-100"
     @click="signInWithGoogle"
   >
     <svg class="w-5 h-5 mr-2" viewBox="0 0 48 48">
@@ -25,6 +25,7 @@
   </button>
 </template>
 <script setup>
+import { supabase } from '@/utils/supabase'
 const signInWithGoogle = async () => {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',

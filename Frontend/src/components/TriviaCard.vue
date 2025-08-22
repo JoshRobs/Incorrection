@@ -19,7 +19,7 @@
     <!-- Statement Box -->
     <div
       :class="[
-        'px-6 pt-2 pb-6 text-lg leading-relaxed font-serif transition-all',
+        'min-h-20 px-6 pt-2 pb-6 text-lg leading-relaxed font-serif transition-all',
         'bg-white dark:bg-gray-900 text-black dark:text-gray-200',
       ]"
     >
