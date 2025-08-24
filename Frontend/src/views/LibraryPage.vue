@@ -5,14 +5,55 @@
         <!-- Left Panel: Source Navigation -->
 
         <!-- Header -->
-        <div class="flex justify-between items-center mb-4">
+        <div class="flex justify-between items-center mb-4 relative">
           <h2 class="text-lg font-bold">Your Library</h2>
-          <button
-            class="cursor-pointer px-3 py-1 rounded-full bg-gray-300 dark:bg-gray-800 text-sm font-medium hover:bg-gray-400 dark:hover:bg-gray-600 transition-all duration-200"
-            @click="onCreatePlaylist"
-          >
-            + Create
-          </button>
+
+          <!-- Create button with animated + icon -->
+          <div class="relative" ref="dropdownRef">
+            <button
+              class="flex items-center gap-2 cursor-pointer px-4 py-1.5 rounded-full bg-gray-300 dark:bg-gray-800 text-sm font-medium hover:bg-gray-400 dark:hover:bg-gray-600 transition-all duration-200"
+              @click="openCreateDropdown = !openCreateDropdown"
+            >
+              <span
+                class="relative w-3 h-3 flex items-center justify-center transition-transform duration-200"
+                :class="{ 'rotate-45': openCreateDropdown }"
+              >
+                <!-- Horizontal bar -->
+                <span class="absolute w-full h-0.5 bg-current rounded"></span>
+                <!-- Vertical bar -->
+                <span class="absolute h-full w-0.5 bg-current rounded"></span>
+              </span>
+              Create
+            </button>
+
+            <!-- Dropdown -->
+            <transition
+              enter-active-class="transition ease-out duration-200"
+              enter-from-class="opacity-0 translate-y-1"
+              enter-to-class="opacity-100 translate-y-0"
+              leave-active-class="transition ease-in duration-150"
+              leave-from-class="opacity-100 translate-y-0"
+              leave-to-class="opacity-0 translate-y-1"
+            >
+              <div
+                v-if="openCreateDropdown"
+                class="absolute right-0 mt-2 w-40 rounded-lg shadow-lg bg-white dark:bg-gray-900 ring-1 ring-black ring-opacity-5 overflow-hidden z-10"
+              >
+                <button
+                  class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                  @click="onCreatePlaylist"
+                >
+                  📂 Playlist
+                </button>
+                <button
+                  class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                  @click="onCreateTrivia"
+                >
+                  ❓ Trivia
+                </button>
+              </div>
+            </transition>
+          </div>
         </div>
 
         <!-- Search -->
@@ -40,7 +81,11 @@
           class="flex items-center rounded space-x-3 cursor-pointer hover:bg-gray-800 p-2"
           @click="selectPlaylist(allTriviaPlaylist)"
         >
-          <img :src="allTriviaPlaylist.image" alt="cover" class="w-12 h-12 rounded object-cover" />
+          <img
+            :src="allTriviaPlaylist.imageUrl"
+            alt="cover"
+            class="w-12 h-12 rounded object-cover"
+          />
           <div class="flex flex-col">
             <span class="text-sm font-medium truncate">{{ allTriviaPlaylist.name }}</span>
             <span class="text-xs text-gray-400 truncate">{{ allTriviaPlaylist.creator }}</span>
@@ -55,7 +100,7 @@
             class="flex items-center rounded space-x-3 cursor-pointer hover:bg-gray-800 p-2"
             @click="selectPlaylist(playlist)"
           >
-            <img :src="playlist.image" alt="cover" class="w-12 h-12 rounded object-cover" />
+            <img :src="playlist.imageUrl" alt="cover" class="w-12 h-12 rounded object-cover" />
             <div class="flex flex-col">
               <span class="text-sm font-medium truncate">{{ playlist.name }}</span>
               <span class="text-xs text-gray-400 truncate">by {{ playlist.creator }}</span>
@@ -65,7 +110,7 @@
       </Pane>
 
       <Pane class="p-4 bg-gray-800 text-white relative">
-        <PlaylistLibraryHeader />
+        <PlaylistLibraryHeader :playlist="selectedPlaylist" :key="selectedPlaylist.id" />
 
         <!-- Draggable Grid -->
         <div class="grid grid-cols-4 gap-4 relative">
@@ -100,7 +145,7 @@
 
           <!-- Add Trivia Card -->
           <div
-            @click="openAddTriviaModal"
+            @click="openAddTriviaModal = true"
             class="flex items-center justify-center bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors border-2 border-dashed border-gray-500"
           >
             <span class="text-lg font-semibold">Add Trivia +</span>
@@ -150,6 +195,11 @@
     </div>
     <!-- Modal -->
     <CreatePlaylistModal :open="openPlaylistModal" @close="openPlaylistModal = false" />
+    <AddTriviaModal
+      :open="openAddTriviaModal"
+      @close="openAddTriviaModal = false"
+      :playlistId="selectedPlaylist.id"
+    />
   </div>
 </template>
 
@@ -164,6 +214,7 @@ import defaultPlaylistImage from '@/assets/images/DefaultPlaylistImage.png'
 import { usePlaylistStore } from '@/stores/playlistStore.ts'
 import { useAuthStore } from '@/stores/authStore'
 import CreatePlaylistModal from '@/components/Playlists/CreatePlaylistModal.vue'
+import AddTriviaModal from '@/components/Trivia/AddTriviaModal.vue'
 
 let lastMouseX = 0
 let lastMouseY = 0
@@ -171,66 +222,46 @@ let lastMouseY = 0
 const playlistStore = usePlaylistStore()
 const authStore = useAuthStore()
 
+const playlists = ref([])
+const openPlaylistModal = ref(false)
+const openAddTriviaModal = ref(false)
+const openCreateDropdown = ref(false)
+const dropdownRef = ref(null)
+const search = ref('')
+
+window.addEventListener('mousemove', updateHoveredCard)
+
 onMounted(async () => {
-  const userPlaylists = await playlistStore.fetchUserPlaylists(authStore.appUser.id)
-  console.log('Fetched Playlists:', userPlaylists)
+  playlists.value = await playlistStore.fetchUserPlaylists(authStore.appUser.id)
+
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('mousemove', updateHoveredCard)
+  document.removeEventListener('click', handleClickOutside)
 })
 
 // Playlist creating modal
-const openPlaylistModal = ref(false)
 
-const onCreatePlaylist = () => {
+function onCreatePlaylist() {
+  openCreateDropdown.value = false
+  // logic to create a playlist
   openPlaylistModal.value = true
 }
 
-//Handle hover on draggable cards
-window.addEventListener('mousemove', (e) => {
-  lastMouseX = e.clientX
-  lastMouseY = e.clientY
-})
-const drag = ref(false)
-function handleDragEnd() {
-  drag.value = false
+function onCreateTrivia() {
+  openCreateDropdown.value = false
+  // logic to create a trivia
+}
 
-  // Step 1: Get the real element under the mouse
-  const el = document.elementFromPoint(lastMouseX, lastMouseY)
-  if (el) {
-    const leaveEvent = new MouseEvent('mouseleave', {
-      bubbles: true,
-      cancelable: true,
-    })
-    el.dispatchEvent(leaveEvent)
+function handleClickOutside(e) {
+  if (!dropdownRef.value.contains(e.target)) {
+    openCreateDropdown.value = false
   }
-
-  // Step 2: Force a DOM reflow to guarantee layout state resets
-  void document.body.offsetHeight // Classic hack to force reflow
 }
 
 // Side bar
-const search = ref('')
-
-// Mock "real" playlists from backend
-const playlists = ref([
-  {
-    id: 1,
-    name: 'Gaming Trivia Vol. 1',
-    creator: 'Josh Roberts',
-    image: defaultPlaylistImage,
-  },
-  {
-    id: 2,
-    name: 'Sci-Fi & Fantasy',
-    creator: 'Emily Ray',
-    image: defaultPlaylistImage,
-  },
-  {
-    id: 3,
-    name: 'Anime Picks',
-    creator: 'Kenta Yamada',
-    image: defaultPlaylistImage,
-  },
-])
-
 const filteredPlaylists = computed(() => {
   const query = search.value.toLowerCase()
 
@@ -238,10 +269,16 @@ const filteredPlaylists = computed(() => {
     (p) => p.name.toLowerCase().includes(query) || p.creator.toLowerCase().includes(query),
   )
 
+  list = list.map((p) => ({
+    ...p,
+    imageUrl: p.imageUrl || defaultPlaylistImage, // Fallback to default image
+    creator: p.creator === authStore.appUser.displayName ? 'You' : p.creator,
+  }))
+
   if (sortOption.value === 'created') {
-    list = list.filter((p) => p.creator === 'Josh Roberts') // Replace with logged-in user
+    list = list.filter((p) => p.creator === authStore.appUser.displayName) // Replace with logged-in user
   } else if (sortOption.value === 'added') {
-    list = list.filter((p) => p.creator !== 'Josh Roberts')
+    list = list.filter((p) => p.creator !== authStore.appUser.displayName)
   }
 
   return list
@@ -273,19 +310,17 @@ const allTriviaPlaylist = {
   id: 'all-trivia',
   name: 'All Trivia',
   creator: 'You',
-  image: defaultPlaylistImage,
+  imageUrl: defaultPlaylistImage,
 }
+
+const selectedPlaylist = ref(allTriviaPlaylist)
 
 async function selectPlaylist(playlist) {
   selectedPlaylist.value = playlist
   if (playlist.virtual) {
     // Virtual "All Trivia" — fetch favorited trivia
-    const { data } = await axios.get('/api/trivia/favorites')
-    playlistItems.value = data
   } else {
     // Normal playlist — fetch its trivia
-    const { data } = await axios.get(`/api/playlists/${playlist.id}/trivia`)
-    playlistItems.value = data
   }
 }
 
@@ -324,11 +359,28 @@ function updateHoveredCard(e) {
   hoveredId.value = el?.dataset?.cardId || null
 }
 
-window.addEventListener('mousemove', updateHoveredCard)
-
-onUnmounted(() => {
-  window.removeEventListener('mousemove', updateHoveredCard)
+//Handle hover on draggable cards
+window.addEventListener('mousemove', (e) => {
+  lastMouseX = e.clientX
+  lastMouseY = e.clientY
 })
+const drag = ref(false)
+function handleDragEnd() {
+  drag.value = false
+
+  // Step 1: Get the real element under the mouse
+  const el = document.elementFromPoint(lastMouseX, lastMouseY)
+  if (el) {
+    const leaveEvent = new MouseEvent('mouseleave', {
+      bubbles: true,
+      cancelable: true,
+    })
+    el.dispatchEvent(leaveEvent)
+  }
+
+  // Step 2: Force a DOM reflow to guarantee layout state resets
+  void document.body.offsetHeight // Classic hack to force reflow
+}
 </script>
 
 <style>

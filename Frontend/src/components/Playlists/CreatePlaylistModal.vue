@@ -150,7 +150,7 @@ function submitForm() {
     name: playlistCreateForm.value.name,
     description: playlistCreateForm.value.description,
     image: playlistCreateForm.value.imageFile,
-    status: 'PRIVATE',
+    visibility: 'PRIVATE',
     mediaTags: playlistCreateForm.value.mediaTags,
     userId: authStore.appUser.id,
   })

@@ -51,7 +51,7 @@ export namespace $Enums {
   export const Category: {
   GAMES: 'GAMES',
   ANIME: 'ANIME',
-  TV_SHOW: 'TV_SHOW',
+  TV_SHOWS: 'TV_SHOWS',
   MOVIES: 'MOVIES',
   BOOKS: 'BOOKS',
   COMICS: 'COMICS'
@@ -69,12 +69,12 @@ export const HintType: {
 export type HintType = (typeof HintType)[keyof typeof HintType]
 
 
-export const PlaylistStatus: {
+export const Visibility: {
   PUBLIC: 'PUBLIC',
   PRIVATE: 'PRIVATE'
 };
 
-export type PlaylistStatus = (typeof PlaylistStatus)[keyof typeof PlaylistStatus]
+export type Visibility = (typeof Visibility)[keyof typeof Visibility]
 
 }
 
@@ -86,9 +86,9 @@ export type HintType = $Enums.HintType
 
 export const HintType: typeof $Enums.HintType
 
-export type PlaylistStatus = $Enums.PlaylistStatus
+export type Visibility = $Enums.Visibility
 
-export const PlaylistStatus: typeof $Enums.PlaylistStatus
+export const Visibility: typeof $Enums.Visibility
 
 /**
  * ##  Prisma Client ʲˢ
@@ -2683,7 +2683,7 @@ export namespace Prisma {
     description: string | null
     favourites: number | null
     imageUrl: string | null
-    status: $Enums.PlaylistStatus | null
+    visibility: $Enums.Visibility | null
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
@@ -2695,7 +2695,7 @@ export namespace Prisma {
     description: string | null
     favourites: number | null
     imageUrl: string | null
-    status: $Enums.PlaylistStatus | null
+    visibility: $Enums.Visibility | null
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
@@ -2708,7 +2708,7 @@ export namespace Prisma {
     mediaTags: number
     favourites: number
     imageUrl: number
-    status: number
+    visibility: number
     createdAt: number
     updatedAt: number
     userId: number
@@ -2732,7 +2732,7 @@ export namespace Prisma {
     description?: true
     favourites?: true
     imageUrl?: true
-    status?: true
+    visibility?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
@@ -2744,7 +2744,7 @@ export namespace Prisma {
     description?: true
     favourites?: true
     imageUrl?: true
-    status?: true
+    visibility?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
@@ -2757,7 +2757,7 @@ export namespace Prisma {
     mediaTags?: true
     favourites?: true
     imageUrl?: true
-    status?: true
+    visibility?: true
     createdAt?: true
     updatedAt?: true
     userId?: true
@@ -2857,7 +2857,7 @@ export namespace Prisma {
     mediaTags: $Enums.Category[]
     favourites: number
     imageUrl: string | null
-    status: $Enums.PlaylistStatus
+    visibility: $Enums.Visibility
     createdAt: Date
     updatedAt: Date
     userId: string
@@ -2889,7 +2889,7 @@ export namespace Prisma {
     mediaTags?: boolean
     favourites?: boolean
     imageUrl?: boolean
-    status?: boolean
+    visibility?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
@@ -2905,7 +2905,7 @@ export namespace Prisma {
     mediaTags?: boolean
     favourites?: boolean
     imageUrl?: boolean
-    status?: boolean
+    visibility?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
@@ -2919,7 +2919,7 @@ export namespace Prisma {
     mediaTags?: boolean
     favourites?: boolean
     imageUrl?: boolean
-    status?: boolean
+    visibility?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
@@ -2933,13 +2933,13 @@ export namespace Prisma {
     mediaTags?: boolean
     favourites?: boolean
     imageUrl?: boolean
-    status?: boolean
+    visibility?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
   }
 
-  export type PlaylistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "mediaTags" | "favourites" | "imageUrl" | "status" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["playlist"]>
+  export type PlaylistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "mediaTags" | "favourites" | "imageUrl" | "visibility" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["playlist"]>
   export type PlaylistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     trivia?: boolean | Playlist$triviaArgs<ExtArgs>
     user?: boolean | AppUserDefaultArgs<ExtArgs>
@@ -2965,7 +2965,7 @@ export namespace Prisma {
       mediaTags: $Enums.Category[]
       favourites: number
       imageUrl: string | null
-      status: $Enums.PlaylistStatus
+      visibility: $Enums.Visibility
       createdAt: Date
       updatedAt: Date
       userId: string
@@ -3400,7 +3400,7 @@ export namespace Prisma {
     readonly mediaTags: FieldRef<"Playlist", 'Category[]'>
     readonly favourites: FieldRef<"Playlist", 'Int'>
     readonly imageUrl: FieldRef<"Playlist", 'String'>
-    readonly status: FieldRef<"Playlist", 'PlaylistStatus'>
+    readonly visibility: FieldRef<"Playlist", 'Visibility'>
     readonly createdAt: FieldRef<"Playlist", 'DateTime'>
     readonly updatedAt: FieldRef<"Playlist", 'DateTime'>
     readonly userId: FieldRef<"Playlist", 'String'>
@@ -3882,6 +3882,7 @@ export namespace Prisma {
     highlightEnd: number | null
     correction: string | null
     comment: string | null
+    visibility: $Enums.Visibility | null
     likes: number | null
     dislikes: number | null
     correctCount: number | null
@@ -3899,6 +3900,7 @@ export namespace Prisma {
     highlightEnd: number | null
     correction: string | null
     comment: string | null
+    visibility: $Enums.Visibility | null
     likes: number | null
     dislikes: number | null
     correctCount: number | null
@@ -3917,6 +3919,7 @@ export namespace Prisma {
     correction: number
     tags: number
     comment: number
+    visibility: number
     likes: number
     dislikes: number
     correctCount: number
@@ -3954,6 +3957,7 @@ export namespace Prisma {
     highlightEnd?: true
     correction?: true
     comment?: true
+    visibility?: true
     likes?: true
     dislikes?: true
     correctCount?: true
@@ -3971,6 +3975,7 @@ export namespace Prisma {
     highlightEnd?: true
     correction?: true
     comment?: true
+    visibility?: true
     likes?: true
     dislikes?: true
     correctCount?: true
@@ -3989,6 +3994,7 @@ export namespace Prisma {
     correction?: true
     tags?: true
     comment?: true
+    visibility?: true
     likes?: true
     dislikes?: true
     correctCount?: true
@@ -4094,6 +4100,7 @@ export namespace Prisma {
     correction: string
     tags: string[]
     comment: string | null
+    visibility: $Enums.Visibility
     likes: number
     dislikes: number
     correctCount: number
@@ -4131,6 +4138,7 @@ export namespace Prisma {
     correction?: boolean
     tags?: boolean
     comment?: boolean
+    visibility?: boolean
     likes?: boolean
     dislikes?: boolean
     correctCount?: boolean
@@ -4153,6 +4161,7 @@ export namespace Prisma {
     correction?: boolean
     tags?: boolean
     comment?: boolean
+    visibility?: boolean
     likes?: boolean
     dislikes?: boolean
     correctCount?: boolean
@@ -4172,6 +4181,7 @@ export namespace Prisma {
     correction?: boolean
     tags?: boolean
     comment?: boolean
+    visibility?: boolean
     likes?: boolean
     dislikes?: boolean
     correctCount?: boolean
@@ -4191,6 +4201,7 @@ export namespace Prisma {
     correction?: boolean
     tags?: boolean
     comment?: boolean
+    visibility?: boolean
     likes?: boolean
     dislikes?: boolean
     correctCount?: boolean
@@ -4198,7 +4209,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type TriviaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "category" | "title" | "incorrectStatement" | "highlightStart" | "highlightEnd" | "correction" | "tags" | "comment" | "likes" | "dislikes" | "correctCount" | "createdAt" | "updatedAt", ExtArgs["result"]["trivia"]>
+  export type TriviaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "category" | "title" | "incorrectStatement" | "highlightStart" | "highlightEnd" | "correction" | "tags" | "comment" | "visibility" | "likes" | "dislikes" | "correctCount" | "createdAt" | "updatedAt", ExtArgs["result"]["trivia"]>
   export type TriviaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | AppUserDefaultArgs<ExtArgs>
     hint?: boolean | Trivia$hintArgs<ExtArgs>
@@ -4230,6 +4241,7 @@ export namespace Prisma {
       correction: string
       tags: string[]
       comment: string | null
+      visibility: $Enums.Visibility
       likes: number
       dislikes: number
       correctCount: number
@@ -4671,6 +4683,7 @@ export namespace Prisma {
     readonly correction: FieldRef<"Trivia", 'String'>
     readonly tags: FieldRef<"Trivia", 'String[]'>
     readonly comment: FieldRef<"Trivia", 'String'>
+    readonly visibility: FieldRef<"Trivia", 'Visibility'>
     readonly likes: FieldRef<"Trivia", 'Int'>
     readonly dislikes: FieldRef<"Trivia", 'Int'>
     readonly correctCount: FieldRef<"Trivia", 'Int'>
@@ -8345,7 +8358,7 @@ export namespace Prisma {
     mediaTags: 'mediaTags',
     favourites: 'favourites',
     imageUrl: 'imageUrl',
-    status: 'status',
+    visibility: 'visibility',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId'
@@ -8365,6 +8378,7 @@ export namespace Prisma {
     correction: 'correction',
     tags: 'tags',
     comment: 'comment',
+    visibility: 'visibility',
     likes: 'likes',
     dislikes: 'dislikes',
     correctCount: 'correctCount',
@@ -8490,16 +8504,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'PlaylistStatus'
+   * Reference to a field of type 'Visibility'
    */
-  export type EnumPlaylistStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlaylistStatus'>
+  export type EnumVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Visibility'>
     
 
 
   /**
-   * Reference to a field of type 'PlaylistStatus[]'
+   * Reference to a field of type 'Visibility[]'
    */
-  export type ListEnumPlaylistStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlaylistStatus[]'>
+  export type ListEnumVisibilityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Visibility[]'>
     
 
 
@@ -8619,7 +8633,7 @@ export namespace Prisma {
     mediaTags?: EnumCategoryNullableListFilter<"Playlist">
     favourites?: IntFilter<"Playlist"> | number
     imageUrl?: StringNullableFilter<"Playlist"> | string | null
-    status?: EnumPlaylistStatusFilter<"Playlist"> | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityFilter<"Playlist"> | $Enums.Visibility
     createdAt?: DateTimeFilter<"Playlist"> | Date | string
     updatedAt?: DateTimeFilter<"Playlist"> | Date | string
     userId?: StringFilter<"Playlist"> | string
@@ -8634,7 +8648,7 @@ export namespace Prisma {
     mediaTags?: SortOrder
     favourites?: SortOrder
     imageUrl?: SortOrderInput | SortOrder
-    status?: SortOrder
+    visibility?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
@@ -8652,7 +8666,7 @@ export namespace Prisma {
     mediaTags?: EnumCategoryNullableListFilter<"Playlist">
     favourites?: IntFilter<"Playlist"> | number
     imageUrl?: StringNullableFilter<"Playlist"> | string | null
-    status?: EnumPlaylistStatusFilter<"Playlist"> | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityFilter<"Playlist"> | $Enums.Visibility
     createdAt?: DateTimeFilter<"Playlist"> | Date | string
     updatedAt?: DateTimeFilter<"Playlist"> | Date | string
     userId?: StringFilter<"Playlist"> | string
@@ -8667,7 +8681,7 @@ export namespace Prisma {
     mediaTags?: SortOrder
     favourites?: SortOrder
     imageUrl?: SortOrderInput | SortOrder
-    status?: SortOrder
+    visibility?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
@@ -8688,7 +8702,7 @@ export namespace Prisma {
     mediaTags?: EnumCategoryNullableListFilter<"Playlist">
     favourites?: IntWithAggregatesFilter<"Playlist"> | number
     imageUrl?: StringNullableWithAggregatesFilter<"Playlist"> | string | null
-    status?: EnumPlaylistStatusWithAggregatesFilter<"Playlist"> | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityWithAggregatesFilter<"Playlist"> | $Enums.Visibility
     createdAt?: DateTimeWithAggregatesFilter<"Playlist"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Playlist"> | Date | string
     userId?: StringWithAggregatesFilter<"Playlist"> | string
@@ -8708,6 +8722,7 @@ export namespace Prisma {
     correction?: StringFilter<"Trivia"> | string
     tags?: StringNullableListFilter<"Trivia">
     comment?: StringNullableFilter<"Trivia"> | string | null
+    visibility?: EnumVisibilityFilter<"Trivia"> | $Enums.Visibility
     likes?: IntFilter<"Trivia"> | number
     dislikes?: IntFilter<"Trivia"> | number
     correctCount?: IntFilter<"Trivia"> | number
@@ -8729,6 +8744,7 @@ export namespace Prisma {
     correction?: SortOrder
     tags?: SortOrder
     comment?: SortOrderInput | SortOrder
+    visibility?: SortOrder
     likes?: SortOrder
     dislikes?: SortOrder
     correctCount?: SortOrder
@@ -8753,6 +8769,7 @@ export namespace Prisma {
     correction?: StringFilter<"Trivia"> | string
     tags?: StringNullableListFilter<"Trivia">
     comment?: StringNullableFilter<"Trivia"> | string | null
+    visibility?: EnumVisibilityFilter<"Trivia"> | $Enums.Visibility
     likes?: IntFilter<"Trivia"> | number
     dislikes?: IntFilter<"Trivia"> | number
     correctCount?: IntFilter<"Trivia"> | number
@@ -8774,6 +8791,7 @@ export namespace Prisma {
     correction?: SortOrder
     tags?: SortOrder
     comment?: SortOrderInput | SortOrder
+    visibility?: SortOrder
     likes?: SortOrder
     dislikes?: SortOrder
     correctCount?: SortOrder
@@ -8800,6 +8818,7 @@ export namespace Prisma {
     correction?: StringWithAggregatesFilter<"Trivia"> | string
     tags?: StringNullableListFilter<"Trivia">
     comment?: StringNullableWithAggregatesFilter<"Trivia"> | string | null
+    visibility?: EnumVisibilityWithAggregatesFilter<"Trivia"> | $Enums.Visibility
     likes?: IntWithAggregatesFilter<"Trivia"> | number
     dislikes?: IntWithAggregatesFilter<"Trivia"> | number
     correctCount?: IntWithAggregatesFilter<"Trivia"> | number
@@ -9050,7 +9069,7 @@ export namespace Prisma {
     mediaTags?: PlaylistCreatemediaTagsInput | $Enums.Category[]
     favourites?: number
     imageUrl?: string | null
-    status: $Enums.PlaylistStatus
+    visibility?: $Enums.Visibility
     createdAt?: Date | string
     updatedAt?: Date | string
     trivia?: PlaylistTriviaCreateNestedManyWithoutPlaylistInput
@@ -9064,7 +9083,7 @@ export namespace Prisma {
     mediaTags?: PlaylistCreatemediaTagsInput | $Enums.Category[]
     favourites?: number
     imageUrl?: string | null
-    status: $Enums.PlaylistStatus
+    visibility?: $Enums.Visibility
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
@@ -9077,7 +9096,7 @@ export namespace Prisma {
     mediaTags?: PlaylistUpdatemediaTagsInput | $Enums.Category[]
     favourites?: IntFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPlaylistStatusFieldUpdateOperationsInput | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     trivia?: PlaylistTriviaUpdateManyWithoutPlaylistNestedInput
@@ -9091,7 +9110,7 @@ export namespace Prisma {
     mediaTags?: PlaylistUpdatemediaTagsInput | $Enums.Category[]
     favourites?: IntFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPlaylistStatusFieldUpdateOperationsInput | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
@@ -9105,7 +9124,7 @@ export namespace Prisma {
     mediaTags?: PlaylistCreatemediaTagsInput | $Enums.Category[]
     favourites?: number
     imageUrl?: string | null
-    status: $Enums.PlaylistStatus
+    visibility?: $Enums.Visibility
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
@@ -9117,7 +9136,7 @@ export namespace Prisma {
     mediaTags?: PlaylistUpdatemediaTagsInput | $Enums.Category[]
     favourites?: IntFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPlaylistStatusFieldUpdateOperationsInput | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9129,7 +9148,7 @@ export namespace Prisma {
     mediaTags?: PlaylistUpdatemediaTagsInput | $Enums.Category[]
     favourites?: IntFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPlaylistStatusFieldUpdateOperationsInput | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
@@ -9144,6 +9163,7 @@ export namespace Prisma {
     correction: string
     tags?: TriviaCreatetagsInput | string[]
     comment?: string | null
+    visibility?: $Enums.Visibility
     likes?: number
     dislikes?: number
     correctCount?: number
@@ -9165,6 +9185,7 @@ export namespace Prisma {
     correction: string
     tags?: TriviaCreatetagsInput | string[]
     comment?: string | null
+    visibility?: $Enums.Visibility
     likes?: number
     dislikes?: number
     correctCount?: number
@@ -9183,6 +9204,7 @@ export namespace Prisma {
     correction?: StringFieldUpdateOperationsInput | string
     tags?: TriviaUpdatetagsInput | string[]
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
     correctCount?: IntFieldUpdateOperationsInput | number
@@ -9204,6 +9226,7 @@ export namespace Prisma {
     correction?: StringFieldUpdateOperationsInput | string
     tags?: TriviaUpdatetagsInput | string[]
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
     correctCount?: IntFieldUpdateOperationsInput | number
@@ -9224,6 +9247,7 @@ export namespace Prisma {
     correction: string
     tags?: TriviaCreatetagsInput | string[]
     comment?: string | null
+    visibility?: $Enums.Visibility
     likes?: number
     dislikes?: number
     correctCount?: number
@@ -9240,6 +9264,7 @@ export namespace Prisma {
     correction?: StringFieldUpdateOperationsInput | string
     tags?: TriviaUpdatetagsInput | string[]
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
     correctCount?: IntFieldUpdateOperationsInput | number
@@ -9258,6 +9283,7 @@ export namespace Prisma {
     correction?: StringFieldUpdateOperationsInput | string
     tags?: TriviaUpdatetagsInput | string[]
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
     correctCount?: IntFieldUpdateOperationsInput | number
@@ -9589,11 +9615,11 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
-  export type EnumPlaylistStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.PlaylistStatus | EnumPlaylistStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.PlaylistStatus[] | ListEnumPlaylistStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PlaylistStatus[] | ListEnumPlaylistStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumPlaylistStatusFilter<$PrismaModel> | $Enums.PlaylistStatus
+  export type EnumVisibilityFilter<$PrismaModel = never> = {
+    equals?: $Enums.Visibility | EnumVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisibilityFilter<$PrismaModel> | $Enums.Visibility
   }
 
   export type PlaylistTriviaListRelationFilter = {
@@ -9618,7 +9644,7 @@ export namespace Prisma {
     mediaTags?: SortOrder
     favourites?: SortOrder
     imageUrl?: SortOrder
-    status?: SortOrder
+    visibility?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
@@ -9635,7 +9661,7 @@ export namespace Prisma {
     description?: SortOrder
     favourites?: SortOrder
     imageUrl?: SortOrder
-    status?: SortOrder
+    visibility?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
@@ -9647,7 +9673,7 @@ export namespace Prisma {
     description?: SortOrder
     favourites?: SortOrder
     imageUrl?: SortOrder
-    status?: SortOrder
+    visibility?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
@@ -9658,14 +9684,14 @@ export namespace Prisma {
     favourites?: SortOrder
   }
 
-  export type EnumPlaylistStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.PlaylistStatus | EnumPlaylistStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.PlaylistStatus[] | ListEnumPlaylistStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PlaylistStatus[] | ListEnumPlaylistStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumPlaylistStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlaylistStatus
+  export type EnumVisibilityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Visibility | EnumVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisibilityWithAggregatesFilter<$PrismaModel> | $Enums.Visibility
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPlaylistStatusFilter<$PrismaModel>
-    _max?: NestedEnumPlaylistStatusFilter<$PrismaModel>
+    _min?: NestedEnumVisibilityFilter<$PrismaModel>
+    _max?: NestedEnumVisibilityFilter<$PrismaModel>
   }
 
   export type EnumCategoryFilter<$PrismaModel = never> = {
@@ -9699,6 +9725,7 @@ export namespace Prisma {
     correction?: SortOrder
     tags?: SortOrder
     comment?: SortOrder
+    visibility?: SortOrder
     likes?: SortOrder
     dislikes?: SortOrder
     correctCount?: SortOrder
@@ -9725,6 +9752,7 @@ export namespace Prisma {
     highlightEnd?: SortOrder
     correction?: SortOrder
     comment?: SortOrder
+    visibility?: SortOrder
     likes?: SortOrder
     dislikes?: SortOrder
     correctCount?: SortOrder
@@ -9742,6 +9770,7 @@ export namespace Prisma {
     highlightEnd?: SortOrder
     correction?: SortOrder
     comment?: SortOrder
+    visibility?: SortOrder
     likes?: SortOrder
     dislikes?: SortOrder
     correctCount?: SortOrder
@@ -10021,8 +10050,8 @@ export namespace Prisma {
     push?: $Enums.Category | $Enums.Category[]
   }
 
-  export type EnumPlaylistStatusFieldUpdateOperationsInput = {
-    set?: $Enums.PlaylistStatus
+  export type EnumVisibilityFieldUpdateOperationsInput = {
+    set?: $Enums.Visibility
   }
 
   export type PlaylistTriviaUpdateManyWithoutPlaylistNestedInput = {
@@ -10344,21 +10373,21 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedEnumPlaylistStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.PlaylistStatus | EnumPlaylistStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.PlaylistStatus[] | ListEnumPlaylistStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PlaylistStatus[] | ListEnumPlaylistStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumPlaylistStatusFilter<$PrismaModel> | $Enums.PlaylistStatus
+  export type NestedEnumVisibilityFilter<$PrismaModel = never> = {
+    equals?: $Enums.Visibility | EnumVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisibilityFilter<$PrismaModel> | $Enums.Visibility
   }
 
-  export type NestedEnumPlaylistStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.PlaylistStatus | EnumPlaylistStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.PlaylistStatus[] | ListEnumPlaylistStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PlaylistStatus[] | ListEnumPlaylistStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumPlaylistStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlaylistStatus
+  export type NestedEnumVisibilityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Visibility | EnumVisibilityFieldRefInput<$PrismaModel>
+    in?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Visibility[] | ListEnumVisibilityFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisibilityWithAggregatesFilter<$PrismaModel> | $Enums.Visibility
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumPlaylistStatusFilter<$PrismaModel>
-    _max?: NestedEnumPlaylistStatusFilter<$PrismaModel>
+    _min?: NestedEnumVisibilityFilter<$PrismaModel>
+    _max?: NestedEnumVisibilityFilter<$PrismaModel>
   }
 
   export type NestedEnumCategoryFilter<$PrismaModel = never> = {
@@ -10404,6 +10433,7 @@ export namespace Prisma {
     correction: string
     tags?: TriviaCreatetagsInput | string[]
     comment?: string | null
+    visibility?: $Enums.Visibility
     likes?: number
     dislikes?: number
     correctCount?: number
@@ -10423,6 +10453,7 @@ export namespace Prisma {
     correction: string
     tags?: TriviaCreatetagsInput | string[]
     comment?: string | null
+    visibility?: $Enums.Visibility
     likes?: number
     dislikes?: number
     correctCount?: number
@@ -10448,7 +10479,7 @@ export namespace Prisma {
     mediaTags?: PlaylistCreatemediaTagsInput | $Enums.Category[]
     favourites?: number
     imageUrl?: string | null
-    status: $Enums.PlaylistStatus
+    visibility?: $Enums.Visibility
     createdAt?: Date | string
     updatedAt?: Date | string
     trivia?: PlaylistTriviaCreateNestedManyWithoutPlaylistInput
@@ -10461,7 +10492,7 @@ export namespace Prisma {
     mediaTags?: PlaylistCreatemediaTagsInput | $Enums.Category[]
     favourites?: number
     imageUrl?: string | null
-    status: $Enums.PlaylistStatus
+    visibility?: $Enums.Visibility
     createdAt?: Date | string
     updatedAt?: Date | string
     trivia?: PlaylistTriviaUncheckedCreateNestedManyWithoutPlaylistInput
@@ -10507,6 +10538,7 @@ export namespace Prisma {
     correction?: StringFilter<"Trivia"> | string
     tags?: StringNullableListFilter<"Trivia">
     comment?: StringNullableFilter<"Trivia"> | string | null
+    visibility?: EnumVisibilityFilter<"Trivia"> | $Enums.Visibility
     likes?: IntFilter<"Trivia"> | number
     dislikes?: IntFilter<"Trivia"> | number
     correctCount?: IntFilter<"Trivia"> | number
@@ -10540,7 +10572,7 @@ export namespace Prisma {
     mediaTags?: EnumCategoryNullableListFilter<"Playlist">
     favourites?: IntFilter<"Playlist"> | number
     imageUrl?: StringNullableFilter<"Playlist"> | string | null
-    status?: EnumPlaylistStatusFilter<"Playlist"> | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityFilter<"Playlist"> | $Enums.Visibility
     createdAt?: DateTimeFilter<"Playlist"> | Date | string
     updatedAt?: DateTimeFilter<"Playlist"> | Date | string
     userId?: StringFilter<"Playlist"> | string
@@ -10802,7 +10834,7 @@ export namespace Prisma {
     mediaTags?: PlaylistCreatemediaTagsInput | $Enums.Category[]
     favourites?: number
     imageUrl?: string | null
-    status: $Enums.PlaylistStatus
+    visibility?: $Enums.Visibility
     createdAt?: Date | string
     updatedAt?: Date | string
     user: AppUserCreateNestedOneWithoutPlaylistsInput
@@ -10815,7 +10847,7 @@ export namespace Prisma {
     mediaTags?: PlaylistCreatemediaTagsInput | $Enums.Category[]
     favourites?: number
     imageUrl?: string | null
-    status: $Enums.PlaylistStatus
+    visibility?: $Enums.Visibility
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
@@ -10835,6 +10867,7 @@ export namespace Prisma {
     correction: string
     tags?: TriviaCreatetagsInput | string[]
     comment?: string | null
+    visibility?: $Enums.Visibility
     likes?: number
     dislikes?: number
     correctCount?: number
@@ -10855,6 +10888,7 @@ export namespace Prisma {
     correction: string
     tags?: TriviaCreatetagsInput | string[]
     comment?: string | null
+    visibility?: $Enums.Visibility
     likes?: number
     dislikes?: number
     correctCount?: number
@@ -10885,7 +10919,7 @@ export namespace Prisma {
     mediaTags?: PlaylistUpdatemediaTagsInput | $Enums.Category[]
     favourites?: IntFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPlaylistStatusFieldUpdateOperationsInput | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: AppUserUpdateOneRequiredWithoutPlaylistsNestedInput
@@ -10898,7 +10932,7 @@ export namespace Prisma {
     mediaTags?: PlaylistUpdatemediaTagsInput | $Enums.Category[]
     favourites?: IntFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPlaylistStatusFieldUpdateOperationsInput | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
@@ -10924,6 +10958,7 @@ export namespace Prisma {
     correction?: StringFieldUpdateOperationsInput | string
     tags?: TriviaUpdatetagsInput | string[]
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
     correctCount?: IntFieldUpdateOperationsInput | number
@@ -10944,6 +10979,7 @@ export namespace Prisma {
     correction?: StringFieldUpdateOperationsInput | string
     tags?: TriviaUpdatetagsInput | string[]
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
     correctCount?: IntFieldUpdateOperationsInput | number
@@ -10961,6 +10997,7 @@ export namespace Prisma {
     correction: string
     tags?: TriviaCreatetagsInput | string[]
     comment?: string | null
+    visibility?: $Enums.Visibility
     likes?: number
     dislikes?: number
     correctCount?: number
@@ -10981,6 +11018,7 @@ export namespace Prisma {
     correction: string
     tags?: TriviaCreatetagsInput | string[]
     comment?: string | null
+    visibility?: $Enums.Visibility
     likes?: number
     dislikes?: number
     correctCount?: number
@@ -11014,6 +11052,7 @@ export namespace Prisma {
     correction?: StringFieldUpdateOperationsInput | string
     tags?: TriviaUpdatetagsInput | string[]
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
     correctCount?: IntFieldUpdateOperationsInput | number
@@ -11034,6 +11073,7 @@ export namespace Prisma {
     correction?: StringFieldUpdateOperationsInput | string
     tags?: TriviaUpdatetagsInput | string[]
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
     correctCount?: IntFieldUpdateOperationsInput | number
@@ -11052,6 +11092,7 @@ export namespace Prisma {
     correction: string
     tags?: TriviaCreatetagsInput | string[]
     comment?: string | null
+    visibility?: $Enums.Visibility
     likes?: number
     dislikes?: number
     correctCount?: number
@@ -11066,7 +11107,7 @@ export namespace Prisma {
     mediaTags?: PlaylistCreatemediaTagsInput | $Enums.Category[]
     favourites?: number
     imageUrl?: string | null
-    status: $Enums.PlaylistStatus
+    visibility?: $Enums.Visibility
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11080,6 +11121,7 @@ export namespace Prisma {
     correction?: StringFieldUpdateOperationsInput | string
     tags?: TriviaUpdatetagsInput | string[]
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
     correctCount?: IntFieldUpdateOperationsInput | number
@@ -11099,6 +11141,7 @@ export namespace Prisma {
     correction?: StringFieldUpdateOperationsInput | string
     tags?: TriviaUpdatetagsInput | string[]
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
     correctCount?: IntFieldUpdateOperationsInput | number
@@ -11118,6 +11161,7 @@ export namespace Prisma {
     correction?: StringFieldUpdateOperationsInput | string
     tags?: TriviaUpdatetagsInput | string[]
     comment?: NullableStringFieldUpdateOperationsInput | string | null
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     likes?: IntFieldUpdateOperationsInput | number
     dislikes?: IntFieldUpdateOperationsInput | number
     correctCount?: IntFieldUpdateOperationsInput | number
@@ -11131,7 +11175,7 @@ export namespace Prisma {
     mediaTags?: PlaylistUpdatemediaTagsInput | $Enums.Category[]
     favourites?: IntFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPlaylistStatusFieldUpdateOperationsInput | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     trivia?: PlaylistTriviaUpdateManyWithoutPlaylistNestedInput
@@ -11144,7 +11188,7 @@ export namespace Prisma {
     mediaTags?: PlaylistUpdatemediaTagsInput | $Enums.Category[]
     favourites?: IntFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPlaylistStatusFieldUpdateOperationsInput | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     trivia?: PlaylistTriviaUncheckedUpdateManyWithoutPlaylistNestedInput
@@ -11157,7 +11201,7 @@ export namespace Prisma {
     mediaTags?: PlaylistUpdatemediaTagsInput | $Enums.Category[]
     favourites?: IntFieldUpdateOperationsInput | number
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumPlaylistStatusFieldUpdateOperationsInput | $Enums.PlaylistStatus
+    visibility?: EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -3,7 +3,7 @@
     <!-- Playlist Cover -->
     <div class="flex-shrink-0">
       <img
-        :src="playlist.image || defaultPlaylistImage"
+        :src="playlistDraft.imageUrl"
         alt="Playlist Cover"
         class="w-60 h-60 object-cover rounded"
       />
@@ -17,7 +17,7 @@
         <div v-if="editingName" class="relative w-full">
           <input
             ref="nameInputRef"
-            v-model="playlist.name"
+            v-model="playlistDraft.name"
             @keydown="handleKeydown"
             @blur="saveName"
             class="bg-transparent border-b border-gray-500 text-3xl font-bold outline-none w-full pr-12"
@@ -39,7 +39,7 @@
           class="text-3xl font-bold cursor-pointer align-middle flex items-center gap-3"
           @click="startEditing"
         >
-          {{ playlist.name }}
+          {{ playlistDraft.name }}
           <!-- Pencil icon -->
           <i
             class="fas fa-pencil-alt text-gray-400 text-lg opacity-50 hover:opacity-100 transition-opacity"
@@ -48,7 +48,7 @@
       </div>
 
       <!-- Creator -->
-      <p class="text-gray-400">By {{ playlist.creator }}</p>
+      <p class="text-gray-400">By {{ playlistDraft.creator }}</p>
 
       <!-- Action Buttons -->
       <div class="flex gap-2 mt-3">
@@ -56,7 +56,7 @@
         <button class="px-3 py-1 bg-green-600 hover:bg-green-500 rounded">Add Trivia</button>
         <button class="px-3 py-1 bg-red-600 hover:bg-red-500 rounded">Delete</button>
         <button class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded" @click="togglePublic">
-          {{ playlist.isPublic ? 'Public' : 'Private' }}
+          {{ playlistDraft.visibility ? 'Public' : 'Private' }}
         </button>
       </div>
     </div>
@@ -65,14 +65,25 @@
 
 <script setup>
 import { ref, nextTick } from 'vue'
-import defaultPlaylistImage from '@/assets/images/DefaultPlaylistImage.png'
+import { usePlaylistStore } from '/src/stores/playlistStore'
+
+const playlistStore = usePlaylistStore()
+
+const props = defineProps({
+  playlist: {
+    type: Object,
+    required: true,
+    default: null,
+  },
+})
+const playlistDraft = ref({ ...props.playlist })
 
 const editingName = ref(false)
 const nameInputRef = ref(null)
 let originalName = ''
 
 function startEditing() {
-  originalName = playlist.value.name
+  originalName = playlistDraft.value.name
   editingName.value = true
   nextTick(() => {
     nameInputRef.value.focus()
@@ -83,10 +94,11 @@ function startEditing() {
 function saveName() {
   editingName.value = false
   // Backend save logic here if needed
+  playlistStore.updatePlaylistName(props.playlist.id, playlistDraft.value.name)
 }
 
 function cancelEditing() {
-  playlist.value.name = originalName
+  playlistDraft.value.name = originalName
   editingName.value = false
 }
 
@@ -95,15 +107,8 @@ function handleKeydown(e) {
   if (e.key === 'Escape') cancelEditing()
 }
 
-const playlist = ref({
-  name: 'New Playlist',
-  creator: 'Josh Roberts',
-  image: '',
-  isPublic: true,
-})
-
 function togglePublic() {
-  playlist.value.isPublic = !playlist.value.isPublic
+  playlistDraft.value.isPublic = !playlistDraft.value.isPublic
   // TODO: save public/private state to backend
 }
 </script>

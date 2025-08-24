@@ -7,5 +7,7 @@ export type {
   Hint,
   HintType,
   Category,
-  PlaylistStatus,
+  Visibility,
 } from "./generated/client";
+
+export { CATEGORY_VALUES } from "./enums"; // <-- export generated arrays

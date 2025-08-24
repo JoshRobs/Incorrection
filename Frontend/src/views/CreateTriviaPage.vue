@@ -1,6 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useTriviaStore } from 'src/stores/triviaStore'
 // Assuming you have Reka UI installed
 import {
   TagsInputClear,
@@ -10,11 +11,14 @@ import {
   TagsInputItemText,
   TagsInputRoot,
 } from 'reka-ui'
+import { CATEGORY_VALUES } from '@project/types'
+import { toPascalCase } from '@/utils/stringUtils'
 
 const router = useRouter()
+const triviaStore = useTriviaStore()
 
 // Form state
-const form = ref({
+const triviaForm = ref({
   title: '',
   incorrectStatement: '',
   correction: '',
@@ -27,8 +31,8 @@ const form = ref({
 })
 
 // Example categories - replace with your dynamic fetch if needed
-const categories = ref(['Science', 'History', 'Pop Culture', 'Math', 'Technology'])
-
+const parsedCategories = CATEGORY_VALUES.map((cat) => toPascalCase(cat))
+const categories = ref(parsedCategories)
 // Handle form submission
 function submit() {
   console.log('Submitting trivia:', triviaForm.value)
@@ -38,7 +42,7 @@ function submit() {
 </script>
 
 <template>
-  <div class="scroll-container text-text p-6">
+  <div class="scroll-container overflow-auto text-text p-6">
     <h1 class="text-3xl font-bold mb-6">Create Trivia</h1>
 
     <div class="grid grid-cols-2 gap-6">
@@ -48,7 +52,7 @@ function submit() {
         <div>
           <label class="block text-sm font-medium mb-1">Title</label>
           <input
-            v-model="form.title"
+            v-model="triviaForm.title"
             type="text"
             class="w-full bg-background border border-gray-600 rounded p-2"
           />
@@ -58,7 +62,7 @@ function submit() {
         <div>
           <label class="block text-sm font-medium mb-1">Incorrect Statement</label>
           <textarea
-            v-model="form.incorrect"
+            v-model="triviaForm.incorrectStatement"
             class="w-full bg-background border border-gray-600 rounded p-2"
           />
         </div>
@@ -67,7 +71,7 @@ function submit() {
         <div>
           <label class="block text-sm font-medium mb-1">Correction</label>
           <textarea
-            v-model="form.correction"
+            v-model="triviaForm.correction"
             class="w-full bg-background border border-gray-600 rounded p-2"
           />
         </div>
@@ -76,7 +80,7 @@ function submit() {
         <div>
           <label class="block text-sm font-medium mb-1">Hint (optional)</label>
           <input
-            v-model="form.hint"
+            v-model="triviaForm.hint"
             type="text"
             class="w-full bg-background border border-gray-600 rounded p-2"
           />
@@ -84,7 +88,7 @@ function submit() {
 
         <!-- Mark as Private -->
         <div class="flex items-center gap-2">
-          <input v-model="form.private" type="checkbox" class="accent-blue-500" />
+          <input v-model="triviaForm.isPrivate" type="checkbox" class="accent-blue-500" />
           <label class="text-sm">Mark as private</label>
         </div>
 
@@ -92,7 +96,7 @@ function submit() {
         <div>
           <label class="block text-sm font-medium mb-1">Comment (optional)</label>
           <textarea
-            v-model="form.comment"
+            v-model="triviaForm.comment"
             class="w-full bg-background border border-gray-600 rounded p-2"
           />
         </div>
@@ -101,11 +105,11 @@ function submit() {
         <div>
           <label class="block text-lg font-semibold mb-1">Tags</label>
           <TagsInputRoot
-            v-model="form.tags"
+            v-model="triviaForm.tags"
             class="flex gap-2 items-center border p-1.5 rounded-lg w-full max-w-[340px] flex-wrap bg-white shadow-sm"
           >
             <TagsInputItem
-              v-for="item in modelValue"
+              v-for="item in triviaForm.tags"
               :key="item"
               :value="item"
               class="text-white font-medium flex items-center justify-center gap-2 bg-grass8 aria-[current=true]:bg-grass9 rounded p-0.5"
@@ -125,7 +129,7 @@ function submit() {
         <div>
           <label class="block text-sm font-medium mb-1">Category</label>
           <select
-            v-model="form.category"
+            v-model="triviaForm.category"
             class="w-full bg-background border border-gray-600 rounded p-2"
           >
             <option value="">Select a category</option>
@@ -150,25 +154,33 @@ function submit() {
       <!-- Preview Section -->
       <div class="bg-secondary p-6 rounded-lg flex flex-col items-center justify-center">
         <div class="w-full max-w-md bg-background p-4 rounded-lg shadow-lg border border-gray-700">
-          <h2 class="text-xl font-bold mb-2">{{ form.title || 'Trivia Title' }}</h2>
+          <h2 class="text-xl font-bold mb-2">{{ triviaForm.title || 'Trivia Title' }}</h2>
           <p class="text-red-400 italic mb-2">
-            {{ form.incorrect || 'Incorrect statement will appear here...' }}
+            {{ triviaForm.incorrectStatement || 'Incorrect statement will appear here...' }}
           </p>
-          <p class="text-green-400">{{ form.correction || 'Correction will appear here...' }}</p>
+          <p class="text-green-400">
+            {{ triviaForm.correction || 'Correction will appear here...' }}
+          </p>
 
-          <div v-if="form.hint" class="mt-2 text-sm text-gray-400">💡 Hint: {{ form.hint }}</div>
+          <div v-if="triviaForm.hint" class="mt-2 text-sm text-gray-400">
+            💡 Hint: {{ triviaForm.hint }}
+          </div>
 
           <!-- Tags -->
-          <div v-if="form.tags" class="mt-3 flex flex-wrap gap-2">
-            <span v-for="tag in tagList" :key="tag" class="bg-gray-700 px-2 py-1 rounded text-xs">
+          <div v-if="triviaForm.tags" class="mt-3 flex flex-wrap gap-2">
+            <span
+              v-for="tag in triviaForm.tags"
+              :key="tag"
+              class="bg-gray-700 px-2 py-1 rounded text-xs"
+            >
               {{ tag }}
             </span>
           </div>
           <div class="mt-4 text-xs text-gray-500">
-            Category: {{ form.category || 'None selected' }}
+            Category: {{ triviaForm.category || 'None selected' }}
           </div>
 
-          <div v-if="form.private" class="mt-1 text-xs text-yellow-500">🔒 Private</div>
+          <div v-if="triviaForm.isPrivate" class="mt-1 text-xs text-yellow-500">🔒 Private</div>
         </div>
       </div>
     </div>

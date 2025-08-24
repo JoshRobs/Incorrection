@@ -21,6 +21,14 @@ export const useAuthStore = defineStore('auth', {
     async fetchCurrentUser() {
       const token = (await supabase.auth.getSession()).data.session?.access_token
 
+      // If no token, skip auth request or call backend with null
+      if (!token) {
+        this.supabaseAuthUser = null
+        this.appUser = null
+        console.log('No user signed in yet')
+        return
+      }
+
       const res = await api.get('/api/auth', {
         headers: { Authorization: `Bearer ${token}` },
       })

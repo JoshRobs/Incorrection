@@ -12,7 +12,7 @@ datasource db {
 enum Category {
   GAMES
   ANIME
-  TV_SHOW
+  TV_SHOWS
   MOVIES
   BOOKS
   COMICS
@@ -24,7 +24,7 @@ enum HintType {
   AUDIO
 }
 
-enum PlaylistStatus {
+enum Visibility {
   PUBLIC
   PRIVATE
 }
@@ -52,7 +52,7 @@ model Playlist {
   favourites          Int              @default(0)
   trivia              PlaylistTrivia[]
   imageUrl            String?
-  status              PlaylistStatus
+  visibility          Visibility       @default(PUBLIC)
   createdAt           DateTime         @default(now())
   updatedAt           DateTime         @updatedAt
   user                AppUser          @relation(fields: [userId], references: [id])
@@ -60,9 +60,9 @@ model Playlist {
 }
 
 model Trivia {
-  id                  Int     @id @default(autoincrement())
+  id                  Int              @id @default(autoincrement())
   userId              String
-  user                AppUser @relation(fields: [userId], references: [id])
+  user                AppUser          @relation(fields: [userId], references: [id])
 
   category            Category
   title               String
@@ -73,9 +73,10 @@ model Trivia {
   tags                String[]
   comment             String?
   hint                Hint?
-  likes               Int @default(0)
-  dislikes            Int @default(0)
-  correctCount        Int @default(0)
+  visibility          Visibility       @default(PUBLIC)
+  likes               Int              @default(0)
+  dislikes            Int              @default(0)
+  correctCount        Int              @default(0)
   createdAt           DateTime         @default(now())
   updatedAt           DateTime         @updatedAt
   PlaylistTrivia      PlaylistTrivia[]

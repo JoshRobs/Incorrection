@@ -138,7 +138,7 @@ exports.Prisma.PlaylistScalarFieldEnum = {
   mediaTags: 'mediaTags',
   favourites: 'favourites',
   imageUrl: 'imageUrl',
-  status: 'status',
+  visibility: 'visibility',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId'
@@ -155,6 +155,7 @@ exports.Prisma.TriviaScalarFieldEnum = {
   correction: 'correction',
   tags: 'tags',
   comment: 'comment',
+  visibility: 'visibility',
   likes: 'likes',
   dislikes: 'dislikes',
   correctCount: 'correctCount',
@@ -196,7 +197,7 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.PlaylistStatus = exports.$Enums.PlaylistStatus = {
+exports.Visibility = exports.$Enums.Visibility = {
   PUBLIC: 'PUBLIC',
   PRIVATE: 'PRIVATE'
 };
@@ -204,7 +205,7 @@ exports.PlaylistStatus = exports.$Enums.PlaylistStatus = {
 exports.Category = exports.$Enums.Category = {
   GAMES: 'GAMES',
   ANIME: 'ANIME',
-  TV_SHOW: 'TV_SHOW',
+  TV_SHOWS: 'TV_SHOWS',
   MOVIES: 'MOVIES',
   BOOKS: 'BOOKS',
   COMICS: 'COMICS'

@@ -14,10 +14,18 @@ export const getUserPlaylists = async (req, res) => {
         trivia: {
           include: { trivia: true }, // get trivia inside playlist if needed
         },
+        user: {
+          select: { displayName: true },
+        },
       },
     });
 
-    res.json(playlists);
+    const response = playlists.map(({ user, ...rest }) => ({
+      ...rest,
+      creator: user.displayName,
+    }));
+
+    res.json(response);
   } catch (error) {
     console.error("Error fetching playlists:", error);
     res.status(500).json({ error: "Failed to fetch playlists" });
@@ -41,9 +49,10 @@ export const createPlaylist = async (req, res) => {
     }
 
     // Get data from request body
-    const { name, description, imageUrl, status, mediaTags, userId } = req.body;
+    const { name, description, imageUrl, visibility, mediaTags, userId } =
+      req.body;
 
-    if (!name || !userId || !status) {
+    if (!name || !userId || !visibility) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -53,7 +62,7 @@ export const createPlaylist = async (req, res) => {
         name,
         description,
         imageUrl,
-        status,
+        visibility,
         mediaTags,
         userId, // assumes playlist.ownerId → appUser.id
       },
@@ -63,5 +72,52 @@ export const createPlaylist = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
+  }
+};
+
+// Update playlist name
+export const updatePlaylistName = async (req, res) => {
+  try {
+    const playlistId = parseInt(req.params.id, 10);
+    const { name } = req.body;
+    const token = req.headers.authorization?.replace("Bearer ", "");
+    if (!token) return res.status(401).json({ error: "No token provided" });
+
+    // Validate Supabase user
+    const {
+      data: { user: supaUser },
+      error,
+    } = await supabase.auth.getUser(token);
+
+    if (error || !supaUser) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const authUid = supaUser.id;
+
+    // Lookup your AppUser record
+    const appUser = await prisma.appUser.findUnique({
+      where: { supabaseAuthId: authUid },
+    });
+
+    // Update playlist only if it belongs to the current user
+    const updated = await prisma.playlist.update({
+      where: {
+        id: playlistId,
+        userId: appUser.id,
+      },
+      data: {
+        name,
+      },
+    });
+
+    if (updated.count === 0) {
+      return res.status(404).json({ error: "Playlist not found or not yours" });
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };

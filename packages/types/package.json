@@ -3,5 +3,35 @@
   "version": "1.0.0",
   "main": "index.ts",
   "types": "index.ts",
-  "private": true
+  "private": true,
+  "scripts": {
+    "generate:enums": "ts-node scripts/generate-enums.ts",
+    "build": "tsup index.ts --format esm,cjs --dts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2"
+  },
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist",
+    "declaration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "*"
+      ]
+    }
+  },
+  "include": [
+    "./**/*.ts"
+  ]
 }
